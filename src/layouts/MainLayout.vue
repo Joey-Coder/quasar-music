@@ -1,21 +1,113 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-header elevated class="bg-primary text-white">
-      <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="left = !left" />
+    <q-header elevated class="bg-primary text-white ">
+      <q-toolbar class="row justify-between items-center no-wrap">
+        <div
+          class="header-left row items-center col-sm-3 col-xs-2"
+          v-if="!isXsAndSearch"
+        >
+          <q-icon name="play_circle_outline" size="lg"></q-icon>
+          <h5 class="q-ma-xs" v-if="$q.screen.gt.xs">QMusic</h5>
+        </div>
 
-        <q-toolbar-title>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" />
-          </q-avatar>
-          Title
-        </q-toolbar-title>
+        <div
+          :class="[
+            'header-center row col-sm-6 items-center q-py-xs',
+            isXsAndSearch ? 'col-xs-12' : 'col-xs-8'
+          ]"
+        >
+          <div
+            :class="[
+              'title row col',
+              $q.screen.lt.sm ? 'justify-around' : 'justify-center'
+            ]"
+            v-if="centerVisiable"
+          >
+            <!-- <h5 class="q-ma-md text-h6" v-if="$q.screen.gt.xs">首页</h5> -->
+            <q-btn
+              class="q-ma-xs text-h6"
+              flat
+              v-if="$q.screen.gt.xs"
+              label="首页"
+            ></q-btn
+            ><q-btn
+              class="q-ma-xs text-h6"
+              flat
+              v-if="$q.screen.gt.xs"
+              label="推荐"
+            ></q-btn
+            ><q-btn
+              class="q-ma-xs text-h6"
+              flat
+              v-if="$q.screen.gt.xs"
+              label="媒体库"
+            ></q-btn>
+            <!-- <h5 class="q-ma-md text-h6" v-if="$q.screen.gt.xs">推荐</h5> -->
+            <!-- <h5 class="q-ma-md text-h6" v-if="$q.screen.gt.xs">媒体库</h5> -->
+            <q-icon
+              name="home"
+              v-if="$q.screen.lt.sm"
+              class="q-mr-sm"
+              size="md"
+            ></q-icon>
+            <q-icon
+              name="explore"
+              v-if="$q.screen.lt.sm"
+              class="q-mr-sm"
+              size="md"
+            ></q-icon>
+            <q-icon
+              name="library_music"
+              v-if="$q.screen.lt.sm"
+              size="md"
+              class="q-mr-sm"
+            ></q-icon>
+            <div class="search row items-center" @click="checkToTitle">
+              <q-icon name="search" size="md"></q-icon>
+              <h5 class="q-ma-sm text-h6" v-if="$q.screen.gt.sm">
+                搜索
+              </h5>
+            </div>
+          </div>
+          <q-input
+            filled
+            v-model="text"
+            v-else
+            autofocus
+            class="search-box col "
+            placeholder="搜索"
+            label-color="white"
+            square
+            @blur="checkToTitle"
+          >
+            <template v-slot:prepend>
+              <q-icon name="arrow_back" color="white" @click="checkToTitle" />
+            </template>
+            <template v-slot:append>
+              <q-icon
+                name="clear"
+                color="white"
+                @click="clearSearchBox"
+                v-if="text !== ''"
+              />
+            </template>
+          </q-input>
+        </div>
+
+        <div
+          class="header-right row col-sm-3 col-xs-2 justify-end"
+          v-if="!isXsAndSearch"
+        >
+          <q-btn
+            icon="account_circle"
+            size="lg"
+            round
+            flat
+            padding="none"
+          ></q-btn>
+        </div>
       </q-toolbar>
     </q-header>
-
-    <q-drawer show-if-above v-model="left" side="left" bordered>
-      <!-- drawer content -->
-    </q-drawer>
 
     <q-page-container>
       <router-view />
@@ -38,8 +130,47 @@
 export default {
   data() {
     return {
-      left: false
+      text: '',
+      centerVisiable: true
+    }
+  },
+  methods: {
+    clearSearchBox() {
+      this.text = ''
+    },
+    checkToTitle() {
+      this.centerVisiable = !this.centerVisiable
+    }
+  },
+  computed: {
+    isXsAndSearch() {
+      return this.$q.screen.lt.sm && !this.centerVisiable
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.q-layout {
+  .q-header {
+    .q-toolbar {
+      // height: 7vh;
+      .header-center {
+        .q-input {
+          ::v-deep .q-field__native.q-placeholder {
+            font-size: 20px;
+            font-weight: 500;
+            color: white;
+          }
+          .q-icon {
+            cursor: pointer;
+          }
+        }
+        .search {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+</style>
