@@ -34,7 +34,7 @@
               class="q-ma-xs text-h6"
               flat
               v-if="$q.screen.gt.xs"
-              label="推荐"
+              label="发现"
             ></q-btn
             ><q-btn
               class="q-ma-xs text-h6"
