@@ -2,11 +2,16 @@
   <div class="square-item">
     <div class="song-cards row items-start justify-between no-wrap q-gutter-lg">
       <q-card class="my-card" v-for="item in itemList" :key="item.id">
-        <q-img :src="item.picUrl" style="height: 70%" transition="scale" round>
+        <q-img
+          :src="item.picUrl || item.coverImgUrl"
+          style="height: 70%"
+          transition="scale"
+          round
+        >
           <div
             class="img-caption absolute-full text-subtitle2 flex flex-center"
           >
-            {{ item.copywriter }}
+            {{ item.copywriter || item.updateFrequency || item.name }}
           </div>
         </q-img>
         <q-card-section>

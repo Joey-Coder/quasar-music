@@ -1,18 +1,29 @@
 <template>
   <q-page class="q-py-lg row justify-center">
     <div class="index-wrapper col-10">
+      <!-- 推荐歌单 -->
       <div class="recommend-song-list">
         <show-items title="推荐歌单" :itemList="recomandList"></show-items>
       </div>
+      <!-- 推荐MV -->
       <div class="recommend-mv-list">
         <show-items title="推荐MV" :itemList="recomandMvList"></show-items>
       </div>
+      <!-- 推荐歌手 -->
       <div class="recommend-artists-list">
         <show-items
           title="热门歌手"
           :itemList="topArtistsList"
           circle
         ></show-items>
+      </div>
+      <!-- 推荐新歌 -->
+      <div class="recommend-new-song">
+        <show-items title="新歌速递" :itemList="recomandNewSong"></show-items>
+      </div>
+      <!-- 排行榜单 -->
+      <div class="top-list">
+        <show-items title="排行榜" :itemList="topList"></show-items>
       </div>
     </div>
   </q-page>
@@ -22,7 +33,9 @@
 import {
   getRecomandList,
   getRecomandMvList,
-  getTopArtists
+  getTopArtists,
+  getNewSong,
+  getTopList
 } from '../boot/axios'
 import ShowItems from '../components/ShowItems'
 export default {
@@ -31,7 +44,9 @@ export default {
     return {
       recomandList: null,
       recomandMvList: null,
-      topArtistsList: null
+      topArtistsList: null,
+      recomandNewSong: null,
+      topList: null
     }
   },
   methods: {
@@ -58,7 +73,21 @@ export default {
         this.showNotify('deep-orange-6', '获取热门歌手失败', 'top')
       }
       this.topArtistsList = artists
-      console.log(this.recomandMvList)
+      // console.log(this.recomandMvList)
+    },
+    async getNewSongList() {
+      const { code, result } = await getNewSong()
+      if (code !== 200) {
+        this.showNotify('deep-orange-6', '获取热门歌手失败', 'top')
+      }
+      this.recomandNewSong = result
+    },
+    async getTopList() {
+      const { code, list } = await getTopList()
+      if (code !== 200) {
+        this.showNotify('deep-orange-6', '获取排行榜单失败', 'top')
+      }
+      this.topList = list.slice(0, 10)
     }
   },
   created() {
@@ -66,6 +95,8 @@ export default {
     this.getRecomandList()
     this.getRecomandMvList()
     this.getTopArtistsList()
+    this.getNewSongList()
+    this.getTopList()
   },
   components: {
     ShowItems

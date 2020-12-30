@@ -52,3 +52,17 @@ export function getTopArtists(limit = 10) {
     url: `/top/artists?offset=0&limit=${limit}`
   })
 }
+
+// 获取推荐新音乐
+export function getNewSong(limit = 10) {
+  return request({
+    url: `/personalized/newsong?limit=${limit}`
+  })
+}
+
+// 获取排行榜
+export function getTopList() {
+  return request({
+    url: '/toplist'
+  })
+}
