@@ -1,7 +1,13 @@
 <template>
   <div class="square-item">
     <div class="song-cards row items-start justify-between no-wrap q-gutter-lg">
-      <q-card class="my-card" v-for="item in itemList" :key="item.id">
+      <q-card
+        class="my-card"
+        v-for="item in itemList"
+        :key="item.id"
+        @click="goTo(item.id)"
+      >
+        <!-- <router-link to="/listdetail/${item.id}"> -->
         <q-img
           :src="item.picUrl || item.coverImgUrl"
           style="height: 70%"
@@ -37,6 +43,7 @@
             </div>
           </div>
         </q-card-section>
+        <!-- </router-link> -->
       </q-card>
     </div>
   </div>
@@ -60,6 +67,9 @@ export default {
     },
     handleload(e) {
       this.$emit('changeProgress')
+    },
+    goTo(id) {
+      this.$router.push({ name: 'listdetail', params: { id } })
     }
   },
   components: {},
@@ -77,6 +87,10 @@ export default {
 </script>
 <style scoped lang="scss">
 .square-item {
+  a {
+    text-decoration: none;
+    color: black;
+  }
   .my-card {
     width: 300px;
     height: 255px;
@@ -85,6 +99,7 @@ export default {
       transition: all 0.5s ease-in-out;
     }
     &:hover {
+      cursor: pointer;
       .img-caption {
         opacity: 1;
       }

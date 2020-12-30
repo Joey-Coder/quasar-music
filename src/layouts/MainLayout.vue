@@ -36,6 +36,7 @@
               flat
               v-if="$q.screen.gt.xs"
               label="首页"
+              to="/"
             ></q-btn
             ><q-btn
               class="q-ma-xs text-h6"
@@ -117,9 +118,9 @@
     </q-header>
 
     <q-page-container>
-      <!-- <keep-alive> -->
-      <router-view />
-      <!-- </keep-alive> -->
+      <keep-alive include="PageIndex">
+        <router-view />
+      </keep-alive>
     </q-page-container>
 
     <q-footer elevated class="bg-grey-8 text-white">
@@ -141,7 +142,7 @@ export default {
     return {
       text: '',
       centerVisiable: true,
-      progress: 0
+      progress: 0.01
     }
   },
   methods: {
@@ -158,12 +159,12 @@ export default {
         console.log('sdf')
         clearInterval(this.interval)
       }
-      let imgLoad = 0 // 加载完成的图片数量
-      let imgCount = Infinity
-      imgCount = document.getElementsByClassName('q-img').length // 图片集合
-      imgLoad = document.getElementsByClassName('q-img__image').length // 图片集合
-      // console.log('sdfdfs:' + imgCount)
-      this.progress = imgLoad / imgCount
+      // let imgLoad = 0 // 加载完成的图片数量
+      // let imgCount = Infinity
+      const imgCount = document.getElementsByClassName('q-img').length // 图片集合
+      const imgLoad = document.getElementsByClassName('q-img__image').length // 图片集合
+      // console.log('sdfdfs:' + imgCount
+      this.progress = Math.max(0.1, imgLoad / imgCount)
       // 设置过时时间
       setTimeout(() => {
         this.progress = 0
