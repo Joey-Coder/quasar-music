@@ -58,7 +58,7 @@ export default {
 .show-items {
   .cards-scroll {
     width: 100%;
-    height: 270px;
+    height: 275px;
   }
 }
 @media (max-width: $breakpoint-xs-max) {
