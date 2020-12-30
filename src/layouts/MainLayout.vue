@@ -1,6 +1,13 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <q-header elevated class="bg-white text-black ">
+      <q-linear-progress
+        stripe
+        size="md"
+        color="warning"
+        :value="progress"
+        v-show="progress > 0"
+      />
       <q-toolbar class="row justify-between items-center no-wrap">
         <div
           class="header-left row items-center col-sm-3 col-xs-2"
@@ -133,7 +140,8 @@ export default {
   data() {
     return {
       text: '',
-      centerVisiable: true
+      centerVisiable: true,
+      progress: 0
     }
   },
   methods: {
@@ -142,12 +150,37 @@ export default {
     },
     checkToTitle() {
       this.centerVisiable = !this.centerVisiable
+    },
+    // 页面加载进度条，通过判断图片加载完成的数量来实现
+    showProgress() {
+      if (this.progress >= 1) {
+        this.progress = 0
+        console.log('sdf')
+        clearInterval(this.interval)
+      }
+      let imgLoad = 0 // 加载完成的图片数量
+      let imgCount = Infinity
+      imgCount = document.getElementsByClassName('q-img').length // 图片集合
+      imgLoad = document.getElementsByClassName('q-img__image').length // 图片集合
+      // console.log('sdfdfs:' + imgCount)
+      this.progress = imgLoad / imgCount
+      // 设置过时时间
+      setTimeout(() => {
+        this.progress = 0
+        clearInterval(this.interval)
+      }, 10000)
     }
   },
   computed: {
     isXsAndSearch() {
       return this.$q.screen.lt.sm && !this.centerVisiable
     }
+  },
+  mounted() {
+    this.interval = setInterval(this.showProgress, 500)
+  },
+  beforeDestroy() {
+    clearInterval(this.interval)
   }
 }
 </script>

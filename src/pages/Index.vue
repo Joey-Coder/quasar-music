@@ -38,6 +38,7 @@ import {
   getTopList
 } from '../boot/axios'
 import ShowItems from '../components/ShowItems'
+
 export default {
   name: 'PageIndex',
   data() {
@@ -50,6 +51,9 @@ export default {
     }
   },
   methods: {
+    changeProgress() {
+      console.log(1)
+    },
     showNotify(color, message, position) {
       this.$q.notify({ color, message, position })
     },
@@ -88,16 +92,45 @@ export default {
         this.showNotify('deep-orange-6', '获取排行榜单失败', 'top')
       }
       this.topList = list.slice(0, 10)
+    },
+    showProgress() {
+      const imgList = document.getElementsByClassName('q-img') // 图片集合
+      const imgCount = imgList.length // 图片总数
+      console.log('sdfdfs:' + imgCount)
+      let imgLoad = 0 // 加载完成的图片数量
+
+      for (let i = 0; i < imgCount; i++) {
+        imgList[i].onload = () => {
+          imgLoad++
+          this.progress = imgLoad / imgCount
+          console.log(imgLoad)
+          if (imgLoad === imgCount) {
+            this.loading = false
+            this.display = true
+            console.log('图片加载完成 展示组件')
+          }
+        }
+        setTimeout(() => {
+          if (!this.display) {
+            this.loading = false
+            this.display = !this.display
+            console.log('超时 强制显示')
+          }
+        }, 10000)
+      }
     }
   },
   created() {
-    // this.getBannerList()
     this.getRecomandList()
     this.getRecomandMvList()
     this.getTopArtistsList()
     this.getNewSongList()
     this.getTopList()
   },
+  updated() {
+    // this.showProgress()
+  },
+
   components: {
     ShowItems
   }

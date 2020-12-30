@@ -57,6 +57,9 @@ export default {
       } else {
         return value
       }
+    },
+    handleload(e) {
+      this.$emit('changeProgress')
     }
   },
   components: {},

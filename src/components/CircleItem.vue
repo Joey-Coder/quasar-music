@@ -18,7 +18,11 @@ export default {
   data() {
     return {}
   },
-  methods: {},
+  methods: {
+    handleload() {
+      this.$emit('changeProgress')
+    }
+  },
   components: {},
   props: {
     itemList: {

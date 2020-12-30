@@ -8,8 +8,14 @@
       }"
       :class="['cards-scroll', $q.screen.lt.sm ? 'q-pt-xs' : 'q-pt-md']"
     >
-      <circle-item :itemList="itemList" v-if="circle"></circle-item>
-      <square-item :itemList="itemList" v-else></square-item>
+      <circle-item
+        :itemList="itemList"
+        v-if="circle"
+      ></circle-item>
+      <square-item
+        :itemList="itemList"
+        v-else
+      ></square-item>
     </q-scroll-area>
   </div>
 </template>
