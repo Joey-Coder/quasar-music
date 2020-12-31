@@ -17,13 +17,13 @@
           <q-card-section class="col-6 row content-around">
             <div
               :class="[
-                'text-h4 title',
+                'text-h4 title col-12',
                 $q.screen.lt.md ? 'text-h5 q-py-xs text-weight-border' : ''
               ]"
             >
               {{ playlist.name.trim() }}
             </div>
-            <div class="text-h6 text-weight-regular text-grey-9 desc">
+            <div class="text-h6 text-weight-regular text-grey-9 desc col-12">
               <!-- 我喜欢英文歌 无谓听不听得懂 至少歌词不会固定我的想象空间
               只感受听时最原本的情感 属于我自己的情感。 （持续更新哦）              封面：马龙.白兰度 -->
               {{ playlist.description.trim() }}
@@ -35,18 +35,21 @@
               dense
               v-show="!$q.screen.lt.md"
             >
-              {{ calcSongCount }}p
+              {{ calcSongCount }} p
             </q-chip>
           </q-card-section>
           <q-separator vertical></q-separator>
 
           <q-card-actions
-            :vertical="$q.screen.lt.md ? 'false' : 'true'"
-            class="justify-around col-1"
+            :class="[
+              'justify-around col-1',
+              $q.screen.lt.md ? 'row' : 'column items-center'
+            ]"
+            align="left"
           >
-            <q-btn flat round dense color="red" icon="favorite" />
-            <q-btn flat round dense color="teal" size="lg" icon="play_arrow" />
-            <q-btn flat round dense color="primary" icon="share" />
+            <q-btn flat round color="red" icon="favorite" />
+            <q-btn flat round color="teal" size="lg" icon="play_arrow" />
+            <q-btn flat round color="primary" icon="share" />
           </q-card-actions>
         </q-card>
       </div>
