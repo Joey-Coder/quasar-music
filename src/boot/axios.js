@@ -89,3 +89,11 @@ export function getListDetail(id) {
     params: { id }
   })
 }
+
+// 获取歌单所有歌曲
+export function getListAllSong(ids) {
+  return request({
+    method: 'GET',
+    url: `/song/detail?ids=${ids}`
+  })
+}
