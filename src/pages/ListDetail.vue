@@ -4,7 +4,7 @@
       <profile-card :playlist="playlist"></profile-card>
       <div class="list-wrapper col-10 q-pt-xl ">
         <q-list class="rounded-borders">
-          <q-item-label header>歌曲列表</q-item-label>
+          <q-item-label header>{{ listTitle }}</q-item-label>
           <q-infinite-scroll @load="onLoad" :offset="50">
             <q-item
               clickable
@@ -63,16 +63,17 @@ export default {
       playlist: null,
       songListQuery: [],
       songlist: [],
-      index: 0,
+      index: 1,
       flag: true,
-      isScoll: false
+      isScoll: false,
+      listTitle: '歌曲列表'
     }
   },
   methods: {
     onLoad(index, done) {
       setTimeout(() => {
-        if (!this.isScoll) return done(stop)
-        if (this.flag === true) {
+        if (!this.isScoll) return done(true)
+        if (this.flag === true || this.songListQuery) {
           //   console.log('loading')
           this.flag = false
           if (this.index * 20 > this.calcSongCount) {
@@ -97,12 +98,16 @@ export default {
         return this.showNotify('deep-orange-6', '获取歌单详情失败', 'top')
       }
       this.playlist = playlist
-      playlist.trackIds.forEach(item => {
+      this.playlist.trackIds.forEach(item => {
         this.songListQuery.push(item.id)
       })
+      this.getListAllSong(0)
     },
     async getListAllSong(start) {
-      //   console.log('starr:', start)
+      //   console.log('start:', start)
+      //   console.log(typeof this.songListQuery)
+      //   console.log('songlist:', this.songListQuery)
+      //   console.log('songlistslice:', this.songListQuery.slice(start, start + 20))
       const { code, songs } = await getListAllSong(
         this.songListQuery.slice(start, start + 20).join(',')
       )
@@ -127,9 +132,11 @@ export default {
       required: true
     }
   },
+  beforeCreate() {
+    // this.getListDetail()
+  },
   created() {
     this.getListDetail()
-    // this.getListAllSong()
   },
   mounted() {
     // this.getListAllSong()
@@ -144,7 +151,7 @@ export default {
   computed: {
     calcSongCount() {
       //   if (this.playlist.trackIds) {
-      return this.playlist.trackIds.length
+      return this.songListQuery.length
       //   }
       //   return 0
     }

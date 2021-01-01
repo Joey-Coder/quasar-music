@@ -1,5 +1,5 @@
 <template>
-  <div class="profile-card card-wrapper col-10">
+  <div class="profile-card card-wrapper col-10" v-if="playlist">
     <q-card
       :class="[
         'my-card wrap bg-grey-2',
@@ -74,13 +74,17 @@ export default {
   props: {
     playlist: {
       type: Object,
-      default: () => {
+      default: function() {
         return { coverImgUrl: '' }
       }
     }
   },
-  created() {},
-  mounted() {},
+  created() {
+    // console.log('created', this.playlist)
+  },
+  updated() {
+    // console.log('updated', this.playlist)
+  },
   computed: {
     calcSongCount() {
       //   if (this.playlist.trackIds) {
