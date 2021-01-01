@@ -2,52 +2,16 @@
   <div class="list-detail">
     <q-page class="q-py-lg row justify-center content-start">
       <profile-card :playlist="playlist"></profile-card>
-      <div class="list-wrapper col-10 q-pt-xl ">
-        <q-list class="rounded-borders">
-          <q-item-label header>{{ listTitle }}</q-item-label>
-          <q-infinite-scroll @load="onLoad" :offset="50">
-            <q-item
-              clickable
-              v-ripple
-              class="row justify-between"
-              v-for="item in songlist"
-              :key="item.id"
-            >
-              <q-item-section avatar>
-                <q-avatar>
-                  <q-img :src="item.al.picUrl" />
-                </q-avatar>
-              </q-item-section>
-              <q-item-section
-                ><q-item-label class="text-weight-bold" lines="2">{{
-                  item.name
-                }}</q-item-label>
-                <q-item-label class="text-grey-9" lines="1">{{
-                  item.ar && item.ar[0].name
-                }}</q-item-label>
-              </q-item-section>
-              <q-item-section>
-                <q-item-label
-                  lines="1"
-                  class="text-grey-9"
-                  v-show="$q.screen.gt.xs"
-                >
-                  {{ item.al.name }}
-                </q-item-label>
-              </q-item-section>
-
-              <q-item-section side>
-                {{ calcSongSize(item.dt) }}
-              </q-item-section>
-            </q-item>
-            <template v-slot:loading>
-              <div class="row justify-center q-my-md">
-                <q-spinner-dots color="primary" size="40px" />
-              </div>
-            </template>
-          </q-infinite-scroll>
-        </q-list>
-      </div>
+      <list-area
+        :songList="songList"
+        :listTitle="listTitle"
+        :isScroll="isScroll"
+        @loadMoreSong="getListAllSong"
+        @changeFlag="changeFlag"
+        :flag="flag"
+        :index="index"
+        :total="calcSongCount"
+      ></list-area>
     </q-page>
   </div>
 </template>
@@ -55,6 +19,7 @@
 <script>
 import { getListDetail, getListAllSong } from '../boot/axios'
 import ProfileCard from '../components/ProfileCard'
+import ListArea from '../components/ListArea'
 // import Vue from 'vue'
 export default {
   name: 'ListDetail',
@@ -62,32 +27,16 @@ export default {
     return {
       playlist: null,
       songListQuery: [],
-      songlist: [],
-      index: 1,
+      songList: [],
+      index: 0,
       flag: true,
-      isScoll: false,
+      isScroll: true,
       listTitle: '歌曲列表'
     }
   },
   methods: {
-    onLoad(index, done) {
-      setTimeout(() => {
-        if (!this.isScoll) return done(true)
-        if (this.flag === true || this.songListQuery) {
-          //   console.log('loading')
-          this.flag = false
-          if (this.index * 20 > this.calcSongCount) {
-            done(true)
-          } else {
-            // console.log('index:', this.index)
-            this.getListAllSong(this.index * 20)
-            this.index++
-            done()
-          }
-        } else {
-          done()
-        }
-      }, 300)
+    changeFlag(e) {
+      this.flag = false
     },
     showNotify(color, message, position) {
       this.$q.notify({ color, message, position })
@@ -104,27 +53,32 @@ export default {
       this.getListAllSong(0)
     },
     async getListAllSong(start) {
-      //   console.log('start:', start)
+      console.log('start:', start)
       //   console.log(typeof this.songListQuery)
-      //   console.log('songlist:', this.songListQuery)
-      //   console.log('songlistslice:', this.songListQuery.slice(start, start + 20))
-      const { code, songs } = await getListAllSong(
-        this.songListQuery.slice(start, start + 20).join(',')
-      )
+      //   console.log('songList:', this.songListQuery)
+      const songListSlice = this.songListQuery.slice(start, start + 20)
+      console.log('songListslice:', songListSlice)
+      if (songListSlice.length === 0) {
+        return console.log('songListSlice is null: see [l:61]')
+      }
+      const { code, songs } = await getListAllSong(songListSlice.join(','))
       if (code !== 200) {
         return this.showNotify('deep-orange-6', '获取歌单所有歌曲失败', 'top')
+      } else {
+        songs.forEach(item => {
+          this.songList.push(item)
+        })
+        this.index++
+        this.flag = true
       }
-      songs.forEach(item => {
-        this.songlist.push(item)
-      })
-      this.flag = true
     },
     calcSongSize(value) {
       return (parseInt(value) / 1000 / 60).toFixed(2)
     }
   },
   components: {
-    ProfileCard
+    ProfileCard,
+    ListArea
   },
   props: {
     id: {
