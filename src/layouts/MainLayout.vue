@@ -156,7 +156,7 @@ export default {
     showProgress() {
       if (this.progress >= 1) {
         this.progress = 0
-        console.log('sdf')
+        // console.log('sdf')
         clearInterval(this.interval)
       }
       // let imgLoad = 0 // 加载完成的图片数量

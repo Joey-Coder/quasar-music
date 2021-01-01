@@ -1,102 +1,51 @@
 <template>
   <div class="list-detail">
     <q-page class="q-py-lg row justify-center content-start">
-      <div class="card-wrapper col-10 ">
-        <q-card
-          :class="[
-            'my-card wrap bg-grey-2',
-            $q.screen.lt.md ? '' : 'row justify-between'
-          ]"
-          flat
-        >
-          <q-img class="col-4 " :src="playlist.coverImgUrl">
-            <q-badge transparent class="badge" v-show="$q.screen.lt.md">
-              {{ calcSongCount }}p
-            </q-badge></q-img
-          >
-          <q-card-section class="col-6 row content-around card-section">
-            <div
-              :class="[
-                'text-h4 title col-12',
-                $q.screen.lt.md ? 'text-h5 q-py-xs text-weight-border' : ''
-              ]"
-            >
-              {{ playlist.name.trim() }}
-            </div>
-            <div class="text-h6 text-weight-regular text-grey-9 desc col-12">
-              {{ playlist.description.trim() }}
-            </div>
-            <q-chip
-              color="primary"
-              text-color="white"
-              icon="album"
-              dense
-              v-show="!$q.screen.lt.md"
-            >
-              {{ calcSongCount }} p
-            </q-chip>
-          </q-card-section>
-          <!-- <q-separator vertical></q-separator> -->
-
-          <q-card-actions
-            :class="[
-              'justify-around col-1 card-action',
-              $q.screen.lt.md ? 'row' : 'column items-center'
-            ]"
-            align="left"
-          >
-            <q-btn flat round color="teal" icon="headset">
-              <q-tooltip anchor="center left">
-                播放
-              </q-tooltip>
-            </q-btn>
-            <q-btn flat round color="red" icon="favorite">
-              <q-tooltip anchor="center left">收藏</q-tooltip>
-            </q-btn>
-            <q-btn flat round color="primary" icon="share">
-              <q-tooltip anchor="center left">分享</q-tooltip>
-            </q-btn>
-          </q-card-actions>
-        </q-card>
-      </div>
+      <profile-card :playlist="playlist"></profile-card>
       <div class="list-wrapper col-10 q-pt-xl ">
         <q-list class="rounded-borders">
           <q-item-label header>歌曲列表</q-item-label>
+          <q-infinite-scroll @load="onLoad" :offset="50">
+            <q-item
+              clickable
+              v-ripple
+              class="row justify-between"
+              v-for="item in songlist"
+              :key="item.id"
+            >
+              <q-item-section avatar>
+                <q-avatar>
+                  <q-img :src="item.al.picUrl" />
+                </q-avatar>
+              </q-item-section>
+              <q-item-section
+                ><q-item-label class="text-weight-bold" lines="2">{{
+                  item.name
+                }}</q-item-label>
+                <q-item-label class="text-grey-9" lines="1">{{
+                  item.ar && item.ar[0].name
+                }}</q-item-label>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label
+                  lines="1"
+                  class="text-grey-9"
+                  v-show="$q.screen.gt.xs"
+                >
+                  {{ item.al.name }}
+                </q-item-label>
+              </q-item-section>
 
-          <q-item
-            clickable
-            v-ripple
-            class="row justify-between"
-            v-for="item in songlist"
-            :key="item.id"
-          >
-            <q-item-section avatar>
-              <q-avatar>
-                <q-img :src="item.al.picUrl" />
-              </q-avatar>
-            </q-item-section>
-            <q-item-section
-              ><q-item-label class="text-weight-bold" lines="2">{{
-                item.name
-              }}</q-item-label>
-              <q-item-label class="text-grey-9" lines="1">{{
-                item.ar && item.ar[0].name
-              }}</q-item-label>
-            </q-item-section>
-            <q-item-section>
-              <q-item-label
-                lines="1"
-                class="text-grey-9"
-                v-show="$q.screen.gt.xs"
-              >
-                {{ item.al.name }}
-              </q-item-label>
-            </q-item-section>
-
-            <q-item-section side>
-              {{ calcSongSize(item.dt) }}
-            </q-item-section>
-          </q-item>
+              <q-item-section side>
+                {{ calcSongSize(item.dt) }}
+              </q-item-section>
+            </q-item>
+            <template v-slot:loading>
+              <div class="row justify-center q-my-md">
+                <q-spinner-dots color="primary" size="40px" />
+              </div>
+            </template>
+          </q-infinite-scroll>
         </q-list>
       </div>
     </q-page>
@@ -105,17 +54,40 @@
 
 <script>
 import { getListDetail, getListAllSong } from '../boot/axios'
+import ProfileCard from '../components/ProfileCard'
 // import Vue from 'vue'
 export default {
   name: 'ListDetail',
   data() {
     return {
-      playlist: [],
+      playlist: null,
       songListQuery: [],
-      songlist: []
+      songlist: [],
+      index: 0,
+      flag: true,
+      isScoll: false
     }
   },
   methods: {
+    onLoad(index, done) {
+      setTimeout(() => {
+        if (!this.isScoll) return done(stop)
+        if (this.flag === true) {
+          //   console.log('loading')
+          this.flag = false
+          if (this.index * 20 > this.calcSongCount) {
+            done(true)
+          } else {
+            // console.log('index:', this.index)
+            this.getListAllSong(this.index * 20)
+            this.index++
+            done()
+          }
+        } else {
+          done()
+        }
+      }, 300)
+    },
     showNotify(color, message, position) {
       this.$q.notify({ color, message, position })
     },
@@ -128,23 +100,27 @@ export default {
       playlist.trackIds.forEach(item => {
         this.songListQuery.push(item.id)
       })
-      this.getListAllSong()
     },
-    async getListAllSong() {
+    async getListAllSong(start) {
+      //   console.log('starr:', start)
       const { code, songs } = await getListAllSong(
-        this.songListQuery.splice(0, 100).join(',')
+        this.songListQuery.slice(start, start + 20).join(',')
       )
       if (code !== 200) {
         return this.showNotify('deep-orange-6', '获取歌单所有歌曲失败', 'top')
       }
-      this.songlist = songs
-      //   console.log(this.songlist)
+      songs.forEach(item => {
+        this.songlist.push(item)
+      })
+      this.flag = true
     },
     calcSongSize(value) {
       return (parseInt(value) / 1000 / 60).toFixed(2)
     }
   },
-  components: {},
+  components: {
+    ProfileCard
+  },
   props: {
     id: {
       type: [Number, String],
@@ -167,7 +143,10 @@ export default {
   },
   computed: {
     calcSongCount() {
+      //   if (this.playlist.trackIds) {
       return this.playlist.trackIds.length
+      //   }
+      //   return 0
     }
   },
   watched: {}
@@ -175,13 +154,6 @@ export default {
 </script>
 <style scoped lang="scss">
 .list-detail {
-  //   .card-wrapper {
-  //     height: 20vh;
-  //     max-height: 20vh;
-  //     .my-card {
-  //       height: 30vh;
-  //     }
-  //   }
   .card-wrapper {
     height: 300px;
     .my-card {
