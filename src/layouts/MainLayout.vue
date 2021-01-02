@@ -119,7 +119,7 @@
 
     <q-page-container>
       <keep-alive :include="['PageIndex']">
-        <router-view :key="$router.fullPath" />
+        <router-view :key="$route.fullPath" />
       </keep-alive>
     </q-page-container>
 

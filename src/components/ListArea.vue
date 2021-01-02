@@ -1,9 +1,12 @@
 <template>
   <div class="list-area list-wrapper col-10">
-    <q-list class="rounded-borders">
+    <q-list class="rounded-borders" v-if="songList.length > 0">
       <q-item-label
         header
-        :class="['list-title', 'titleBold' ? 'text-h5 text-dark text-weight-bold' : '']"
+        :class="[
+          'list-title',
+          'titleBold' ? 'text-h4 text-dark text-weight-bold' : ''
+        ]"
         >{{ listTitle }}</q-item-label
       >
       <q-infinite-scroll @load="onLoad" :offset="50">
@@ -131,9 +134,10 @@ export default {
 }
 @media (max-width: $breakpoint-sm-max) {
   .list-wrapper {
-    padding-top: 15px;
+    padding-top: 10px;
     .list-title {
-      font-size: 20px;
+      font-size: 1.5rem;
+      font-weight: 700;
     }
   }
 }

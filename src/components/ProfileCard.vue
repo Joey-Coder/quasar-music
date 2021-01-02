@@ -7,7 +7,7 @@
       ]"
       flat
     >
-      <q-img class="col-4 " :src="this.playlist.coverImgUrl">
+      <q-img class="col-4 " :src="playlist.coverImgUrl">
         <q-badge transparent class="badge" v-show="$q.screen.lt.md">
           {{ calcSongCount }}p
         </q-badge></q-img

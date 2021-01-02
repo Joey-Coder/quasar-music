@@ -1,7 +1,7 @@
 <template>
   <div class="play-list">
     <q-page class="q-py-lg row justify-center content-start">
-      <profile-card :playlist="playlist"></profile-card>
+      <profile-card :playlist="playlist" class="card-wrapper"></profile-card>
       <list-area
         :songList="songList"
         :listTitle="listTitle"
@@ -11,6 +11,7 @@
         :flag="flag"
         :index="index"
         :total="calcSongSize"
+        class="list-wrapper"
       ></list-area>
     </q-page>
   </div>
@@ -126,77 +127,15 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-.list-detail {
-  .card-wrapper {
-    height: 300px;
-    .my-card {
-      height: 100%;
-      .card-section {
-        .title {
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 2;
-          overflow: hidden;
-        }
-        .desc {
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 3;
-          overflow: hidden;
-        }
-      }
-      .q-img {
-        object-fit: cover;
-        height: 99.8%;
-        .badge {
-          text-align: left;
-          height: 18px;
-          width: 50px;
-        }
-      }
-      .q-chip {
-        //   width: 63px;
-      }
-    }
-  }
+.play-list {
   .list-wrapper {
-    .q-list {
-      .q-item {
-        border-radius: 8px;
-        height: 75px;
-      }
-    }
+    padding-top: 50px;
   }
 }
 @media (max-width: $breakpoint-sm-max) {
-  .list-detail {
-    .card-wrapper {
-      height: 62vh;
-      //   display: inline-block;
-      .my-card {
-        // display: inline-block;
-        height: 100%;
-        .q-img {
-          object-fit: cover;
-          height: 50%;
-        }
-        .card-section {
-          padding-bottom: 0;
-          .desc {
-            font-size: 1rem;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
-            overflow: hidden;
-          }
-        }
-        .card-action {
-          padding-bottom: 0;
-        }
-      }
-    }
+  .play-list {
     .list-wrapper {
-      padding-top: 15px;
+      padding-top: 0;
     }
   }
 }

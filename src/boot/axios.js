@@ -103,3 +103,36 @@ export function getHotSong(id) {
     url: `/artists?id=${id}`
   })
 }
+
+/**
+ * 获取歌手推荐MV
+ * @param {Number | String} id
+ */
+export function getHotMv(id) {
+  return request({
+    method: 'GET',
+    url: `/artist/mv?id=${id}`
+  })
+}
+
+/**
+ * 获取歌手推荐MV
+ * @param {Number | String} id
+ */
+export function getHotAlbum(id, limit = 10) {
+  return request({
+    method: 'GET',
+    url: `/artist/album?id=${id}&limit=${limit}`
+  })
+}
+
+/**
+ * 获取相似歌手
+ * @param {Number | String} id
+ */
+export function getSimiArtists(id) {
+  return request({
+    method: 'GET',
+    url: `/simi/artist?id=${id}`
+  })
+}
