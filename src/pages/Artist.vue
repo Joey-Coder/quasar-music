@@ -1,9 +1,16 @@
 <template>
   <q-page class="artist q-py-lg row justify-center">
     <div class="intro col-10">
-      <profile-card :playlist="artist">12</profile-card>
+      <profile-card :playlist="artist"></profile-card>
     </div>
-    <div class="hot-song col-10"></div>
+    <div class="hot-song col-10">
+      <list-area
+        :songList="hotSongs"
+        listTitle="热门歌曲"
+        :isScroll="false"
+        :titleBold="true"
+      ></list-area>
+    </div>
     <div class="top-mv col-10"></div>
     <div class="top-album col-10"></div>
     <div class="other-artist col-10"></div>
@@ -12,6 +19,7 @@
 
 <script>
 import ProfileCard from '../components/ProfileCard'
+import ListArea from '../components/ListArea'
 import { getHotSong } from '../boot/axios'
 export default {
   name: 'Artist',
@@ -33,12 +41,13 @@ export default {
       this.artist = artist
       this.artist.coverImgUrl = artist.img1v1Url
       this.artist.description = artist.briefDesc
-      this.hotSongs = hotSongs
-      console.log(this.artist)
+      this.hotSongs = hotSongs.slice(0, 10)
+      //   console.log(this.artist)
     }
   },
   components: {
-    ProfileCard
+    ProfileCard,
+    ListArea
   },
   props: {
     id: {
@@ -50,8 +59,26 @@ export default {
     this.getHotSong()
   },
   mounted() {},
-  computed: {},
+  computed: {
+    calcSongSize(value) {
+      return (parseInt(value) / 1000 / 60).toFixed(2)
+    }
+  },
   watched: {}
 }
 </script>
-<style scoped lang="less"></style>
+<style scoped lang="scss">
+.artist {
+  .hot-song {
+    padding-top: 50px;
+  }
+}
+
+@media (max-width: $breakpoint-sm-max) {
+  .artist {
+    .hot-song {
+      padding-top: 20px;
+    }
+  }
+}
+</style>

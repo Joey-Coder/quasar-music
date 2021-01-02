@@ -1,7 +1,11 @@
 <template>
   <div class="list-area list-wrapper col-10">
     <q-list class="rounded-borders">
-      <q-item-label header>{{ listTitle }}</q-item-label>
+      <q-item-label
+        header
+        :class="['list-title', 'titleBold' ? 'text-h5 text-dark text-weight-bold' : '']"
+        >{{ listTitle }}</q-item-label
+      >
       <q-infinite-scroll @load="onLoad" :offset="50">
         <q-item
           clickable
@@ -104,6 +108,10 @@ export default {
     total: {
       type: Number,
       default: 0
+    },
+    titleBorder: {
+      type: Boolean,
+      default: false
     }
   },
   created() {},
@@ -124,6 +132,9 @@ export default {
 @media (max-width: $breakpoint-sm-max) {
   .list-wrapper {
     padding-top: 15px;
+    .list-title {
+      font-size: 20px;
+    }
   }
 }
 </style>

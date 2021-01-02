@@ -10,7 +10,7 @@
         @changeFlag="changeFlag"
         :flag="flag"
         :index="index"
-        :total="calcSongCount"
+        :total="calcSongSize"
       ></list-area>
     </q-page>
   </div>
