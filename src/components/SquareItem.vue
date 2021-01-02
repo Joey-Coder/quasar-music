@@ -69,7 +69,7 @@ export default {
       this.$emit('changeProgress')
     },
     goTo(id) {
-      this.$router.push({ name: 'listdetail', params: { id } })
+      this.$router.push({ name: this.path, params: { id } })
     }
   },
   components: {},
@@ -77,6 +77,10 @@ export default {
     itemList: {
       type: Array,
       default: null
+    },
+    path: {
+      type: String,
+      default: 'playlist'
     }
   },
   created() {},

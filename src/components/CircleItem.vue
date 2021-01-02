@@ -1,6 +1,11 @@
 <template>
   <div class="circle-item row items-start justify-between no-wrap q-gutter-lg">
-    <q-avatar v-for="item in itemList" :key="item.id" class="artist-avatar">
+    <q-avatar
+      v-for="item in itemList"
+      :key="item.id"
+      class="artist-avatar"
+      @click="goTo(item.id)"
+    >
       <q-img :src="item.img1v1Url" transition="scale">
         <div
           class="avatar-caption absolute-full text-subtitle2 flex flex-center"
@@ -21,6 +26,9 @@ export default {
   methods: {
     handleload() {
       this.$emit('changeProgress')
+    },
+    goTo(id) {
+      this.$router.push({ name: this.path, params: { id } })
     }
   },
   components: {},
@@ -28,6 +36,10 @@ export default {
     itemList: {
       type: Array,
       default: null
+    },
+    path: {
+      type: String,
+      default: 'playlist'
     }
   },
   created() {},
@@ -42,11 +54,13 @@ export default {
     width: 200px;
     height: 200px;
     cursor: pointer;
+    transition: all 0.5s ease-in-out;
     .avatar-caption {
       transition: all 0.5s ease-in-out;
       opacity: 0;
     }
     &:hover {
+      // box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
       .avatar-caption {
         opacity: 1;
       }

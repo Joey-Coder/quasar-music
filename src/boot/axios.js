@@ -92,3 +92,14 @@ export function getListAllSong(ids) {
     url: `/song/detail?ids=${ids}`
   })
 }
+
+/**
+ * 获取歌手热门歌曲和部分信息
+ * @param {Number | String} id
+ */
+export function getHotSong(id) {
+  return request({
+    method: 'GET',
+    url: `/artists?id=${id}`
+  })
+}

@@ -88,7 +88,7 @@ export default {
   computed: {
     calcSongCount() {
       //   if (this.playlist.trackIds) {
-      return this.playlist.trackIds.length
+      return this.playlist.musicSize || this.playlist.trackIds.length
       //   }
       //   return 0
     }

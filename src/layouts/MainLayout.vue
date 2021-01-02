@@ -118,8 +118,8 @@
     </q-header>
 
     <q-page-container>
-      <keep-alive include="PageIndex">
-        <router-view />
+      <keep-alive :include="['PageIndex']">
+        <router-view :key="$router.fullPath" />
       </keep-alive>
     </q-page-container>
 

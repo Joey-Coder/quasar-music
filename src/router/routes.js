@@ -5,9 +5,15 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/Index.vue') },
       {
-        path: '/listdetail/:id',
-        name: 'listdetail',
-        component: () => import('pages/ListDetail.vue'),
+        path: '/playlist/:id',
+        name: 'playlist',
+        component: () => import('pages/PlayList.vue'),
+        props: true
+      },
+      {
+        path: '/artist/:id',
+        name: 'artist',
+        component: () => import('pages/Artist.vue'),
         props: true
       }
     ]

@@ -3,7 +3,11 @@
     <div class="index-wrapper col-10">
       <!-- 推荐歌单 -->
       <div class="recommend-song-list">
-        <show-items title="推荐歌单" :itemList="recomandList"></show-items>
+        <show-items
+          title="推荐歌单"
+          :itemList="recomandList"
+          path="playlist"
+        ></show-items>
       </div>
       <!-- 推荐MV -->
       <div class="recommend-mv-list">
@@ -15,6 +19,7 @@
           title="热门歌手"
           :itemList="topArtistsList"
           circle
+          path="artist"
         ></show-items>
       </div>
       <!-- 推荐新歌 -->

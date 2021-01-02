@@ -11,11 +11,9 @@
       <circle-item
         :itemList="itemList"
         v-if="circle"
+        :path="path"
       ></circle-item>
-      <square-item
-        :itemList="itemList"
-        v-else
-      ></square-item>
+      <square-item :itemList="itemList" v-else :path="path"></square-item>
     </q-scroll-area>
   </div>
 </template>
@@ -47,6 +45,10 @@ export default {
     circle: {
       type: Boolean,
       default: false
+    },
+    path: {
+      type: String,
+      default: 'playlist'
     }
   },
   created() {},
