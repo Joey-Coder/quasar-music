@@ -131,7 +131,7 @@ export default {
 }
 @media (max-width: $breakpoint-sm-max) {
   .card-wrapper {
-    height: 62vh;
+    height: auto;
     //   display: inline-block;
     .my-card {
       // display: inline-block;
@@ -151,7 +151,7 @@ export default {
         }
       }
       .card-action {
-        padding-bottom: 0;
+        // padding-bottom: 0;
       }
     }
   }
