@@ -98,9 +98,9 @@ export default {
 </script>
 <style scoped lang="scss">
 .card-wrapper {
-  height: 300px;
+  height: auto;
   .my-card {
-    height: 100%;
+    height: auto;
     .card-section {
       .title {
         display: -webkit-box;
@@ -117,7 +117,7 @@ export default {
     }
     .q-img {
       object-fit: cover;
-      height: 99.8%;
+      height: 300px;
       .badge {
         text-align: left;
         height: 18px;
@@ -132,13 +132,11 @@ export default {
 @media (max-width: $breakpoint-sm-max) {
   .card-wrapper {
     height: auto;
-    //   display: inline-block;
     .my-card {
-      // display: inline-block;
-      height: 100%;
+      height: auto;
       .q-img {
         object-fit: cover;
-        height: 50%;
+        height: 200px;
       }
       .card-section {
         padding-bottom: 0;

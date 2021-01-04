@@ -10,7 +10,6 @@
         @changeFlag="changeFlag"
         :flag="flag"
         :index="index"
-        :total="calcSongSize"
         class="list-wrapper"
       ></list-area>
     </q-page>
