@@ -149,7 +149,7 @@ export default {
       player: null,
       brs: [],
       tab: 'comment',
-      commentType: 'new',
+      commentType: 'hot',
       simiMvs: [],
       comments: [],
       hotComments: [],
@@ -225,12 +225,10 @@ export default {
       this.shareCount = shareCount
     },
     changePage(value) {
-      //   console.log(value)
       this.getMvComment(20, value * 20)
       this.$refs.tabsWrapper.scrollIntoView({ behavior: 'smooth' })
     },
     initPlayer() {
-      //
       const sources = this.mvUrl.map(item => {
         // console.log(url)
         return {

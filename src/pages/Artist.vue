@@ -12,12 +12,12 @@
       ></list-area>
     </div>
     <div class="top-mv col-10">
-      <show-items title="热门MV" path="/mv" :itemList="mvs"></show-items>
+      <show-items title="热门MV" path="mv" :itemList="mvs"></show-items>
     </div>
     <div class="top-album col-10">
       <show-items
         title="热门专辑"
-        path="/album"
+        path="album"
         :itemList="hotAlbums"
       ></show-items>
     </div>

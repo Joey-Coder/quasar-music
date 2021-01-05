@@ -191,3 +191,14 @@ export function getMvCommentLikeCount(id) {
     url: `/mv/detail/info?mvid=${id}`
   })
 }
+
+/**
+ * 获取mv评论，点赞数量
+ * @param {Number | String} id
+ */
+export function getAlbum(id) {
+  return request({
+    method: 'GET',
+    url: `/album?id=${id}`
+  })
+}

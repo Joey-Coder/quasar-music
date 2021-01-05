@@ -7,7 +7,7 @@
       ]"
       flat
     >
-      <q-img class="col-4 " :src="playlist.coverImgUrl">
+      <q-img class="col-4 " :src="playlist.coverImgUrl || playlist.picUrl">
         <q-badge transparent class="badge" v-show="$q.screen.lt.md">
           {{ calcSongCount }}p
         </q-badge></q-img
@@ -88,7 +88,11 @@ export default {
   computed: {
     calcSongCount() {
       //   if (this.playlist.trackIds) {
-      return this.playlist.musicSize || this.playlist.trackIds.length
+      return (
+        this.playlist.size ||
+        this.playlist.musicSize ||
+        this.playlist.trackIds.length
+      )
       //   }
       //   return 0
     }

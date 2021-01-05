@@ -21,6 +21,12 @@ const routes = [
         name: 'mv',
         component: () => import('pages/Mv.vue'),
         props: true
+      },
+      {
+        path: '/album/:id',
+        name: 'album',
+        component: () => import('pages/Album.vue'),
+        props: true
       }
     ]
   },
