@@ -115,6 +115,7 @@
         </q-tab-panel>
 
         <q-tab-panel name="lyrics">
+          <h4 class="comment-title text-weight-bold">歌词</h4>
           未搜索到歌词
         </q-tab-panel>
 
@@ -313,6 +314,9 @@ export default {
     margin-top: 50px;
     .q-tabs {
       max-width: 40vw;
+    }
+    .show-items {
+      padding-top: 0;
     }
 
     .comment-title {

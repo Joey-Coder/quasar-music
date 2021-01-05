@@ -1,37 +1,42 @@
 <template>
-  <div class="comment" v-if="comments.length > 0">
-    <div v-for="item in comments" :key="item.id" class="row justify-between">
-      <q-chat-message
-        :name="item.user.nickname"
-        :avatar="item.user.avatarUrl"
-        :text="[item.content]"
-        :stamp="handleTimeStamp(item.time)"
-        bg-color="grey-3"
-        class="q-pb-md col-10"
-      />
-      <q-btn
-        flat
-        color="red"
-        icon="favorite"
-        :label="item.likedCount"
-        dense
-        size="sm"
-        class="self-start col-1"
-      />
-    </div>
+  <div class="comment">
+    <div v-if="comments.length > 0">
+      <div v-for="item in comments" :key="item.id" class="row justify-between">
+        <q-chat-message
+          :name="item.user.nickname"
+          :avatar="item.user.avatarUrl"
+          :text="[item.content]"
+          :stamp="handleTimeStamp(item.time)"
+          bg-color="grey-3"
+          class="q-pb-md col-10"
+        />
+        <q-btn
+          flat
+          color="red"
+          icon="favorite"
+          :label="item.likedCount"
+          dense
+          size="sm"
+          class="self-start col-1"
+        />
+      </div>
 
-    <q-separator color="grey-3" />
-    <div class="flex flex-center q-pt-sm">
-      <q-pagination
-        v-if="type === 'new'"
-        v-model="current"
-        :max="maxPageCount"
-        :max-pages="8"
-        color="grey-7"
-        :boundary-numbers="false"
-        @input="$emit('changePage', current)"
-      >
-      </q-pagination>
+      <q-separator color="grey-3" />
+      <div class="flex flex-center q-pt-sm">
+        <q-pagination
+          v-if="type === 'new'"
+          v-model="current"
+          :max="maxPageCount"
+          :max-pages="8"
+          color="grey-7"
+          :boundary-numbers="false"
+          @input="$emit('changePage', current)"
+        >
+        </q-pagination>
+      </div>
+    </div>
+    <div v-else>
+      暂无评论
     </div>
   </div>
 </template>
