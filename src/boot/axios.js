@@ -136,3 +136,47 @@ export function getSimiArtists(id) {
     url: `/simi/artist?id=${id}`
   })
 }
+
+/**
+ * 获取MV详情
+ * @param {Number | String} id
+ */
+export function getMvDetail(id) {
+  return request({
+    method: 'GET',
+    url: `/mv/detail?mvid=${id}`
+  })
+}
+
+/**
+ * 获取MV播放地址
+ * @param {Number | String} id
+ */
+export function getMvAddress(id, r) {
+  return request({
+    method: 'GET',
+    url: `/mv/url?id=${id}&r=${r}`
+  })
+}
+
+/**
+ * 获取相似mv
+ * @param {Number | String} id
+ */
+export function getSimiMv(id) {
+  return request({
+    method: 'GET',
+    url: `/simi/mv?mvid=${id}`
+  })
+}
+
+/**
+ * 获取mv评论
+ * @param {Number | String} id
+ */
+export function getMvComment(id, limit, before) {
+  return request({
+    method: 'GET',
+    url: `/comment/mv?id=${id}&limit=${limit}&before=${before}`
+  })
+}

@@ -11,7 +11,11 @@
       </div>
       <!-- 推荐MV -->
       <div class="recommend-mv-list">
-        <show-items title="推荐MV" :itemList="recomandMvList"></show-items>
+        <show-items
+          title="推荐MV"
+          :itemList="recomandMvList"
+          path="mv"
+        ></show-items>
       </div>
       <!-- 推荐歌手 -->
       <div class="recommend-artists-list">
@@ -142,8 +146,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.index-wrapper {
-  // padding: 50px;
-}
-</style>
+<style lang="scss" scoped></style>

@@ -1,7 +1,7 @@
 <template>
   <div
     :class="['show-items', $q.screen.lt.sm ? 'q-pt-md' : 'q-mb-xl']"
-    v-if="itemList.length > 0"
+    v-if="itemList && itemList.length > 0"
   >
     <h4 class="title q-ma-none text-weight-bold" v-text="title"></h4>
     <q-scroll-area

@@ -15,6 +15,12 @@ const routes = [
         name: 'artist',
         component: () => import('pages/Artist.vue'),
         props: true
+      },
+      {
+        path: '/mv/:id',
+        name: 'mv',
+        component: () => import('pages/Mv.vue'),
+        props: true
       }
     ]
   },
