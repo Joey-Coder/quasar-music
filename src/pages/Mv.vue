@@ -74,33 +74,8 @@
       </q-tabs>
       <q-tab-panels v-model="tab" animated>
         <q-tab-panel name="comment">
-          <div class="comment-wrapper">
-            <h4 class="comment-title text-weight-bold">最热评论</h4>
-            <div
-              v-for="item in hotComments"
-              :key="item.id"
-              class="row justify-between"
-            >
-              <q-chat-message
-                :name="item.user.nickname"
-                :avatar="item.user.avatarUrl"
-                :text="[item.content]"
-                :stamp="handleTimeStamp(item.time)"
-                bg-color="grey-3"
-                class="q-pb-md col-10"
-              />
-              <q-btn
-                flat
-                round
-                color="red"
-                icon="favorite"
-                dense
-                :label="item.likedCount"
-                size="sm"
-                class="self-start col-1"
-              />
-            </div>
-          </div>
+          <comment :comments="hotComments" title="最热评论"></comment>
+          <comment :comments="comments" title="最新评论"></comment>
         </q-tab-panel>
 
         <q-tab-panel name="lyrics">
@@ -124,7 +99,8 @@ import {
   getSimiMv,
   getMvComment
 } from '../boot/axios'
-import showItems from '../components/ShowItems'
+import ShowItems from '../components/ShowItems'
+import Comment from '../components/Comment'
 export default {
   name: 'Mv',
   data() {
@@ -202,7 +178,7 @@ export default {
           size: item.size
         }
       })
-      console.log('sources:', sources)
+      //   console.log('sources:', sources)
 
       this.player.source = {
         type: 'video',
@@ -210,17 +186,11 @@ export default {
         sources: sources,
         poster: this.mvCover
       }
-    },
-    handleTimeStamp(t) {
-      const date = new Date(t)
-      const year = date.getFullYear()
-      const month = date.getMonth()
-      const day = date.getDate()
-      return `${year}年${month}月${day}日`
     }
   },
   components: {
-    showItems
+    ShowItems,
+    Comment
   },
   props: {
     id: {
@@ -285,9 +255,9 @@ export default {
       max-width: 40vw;
     }
     .comment-wrapper {
-      .comment-title {
-        margin-top: 0;
-      }
+      //   .comment-title {
+      //     margin-top: 0;
+      //   }
     }
   }
 }
@@ -321,10 +291,10 @@ export default {
         }
       }
       .comment-wrapper {
-        .comment-title {
-          font-size: 1.5rem;
-          margin-bottom: 15px;
-        }
+        // .comment-title {
+        //   font-size: 1.5rem;
+        //   margin-bottom: 15px;
+        // }
       }
     }
   }
