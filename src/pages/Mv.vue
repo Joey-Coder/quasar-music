@@ -33,7 +33,8 @@
               color="red"
               icon="favorite"
               :size="$q.screen.lt.sm ? 'sm' : 'md'"
-            />
+            >
+            </q-btn>
             <q-btn
               flat
               round
@@ -49,7 +50,6 @@
       <q-tabs
         v-model="tab"
         narrow-indicator
-        dense
         align="justify"
         style="margin: 0 auto"
       >
@@ -58,7 +58,9 @@
           :icon="$q.screen.gt.sm ? 'chat' : ''"
           label="评论"
           class="text-accent tab-icon"
-        />
+        >
+          <q-badge color="red" floating>{{ commentCount }}</q-badge></q-tab
+        >
         <q-tab
           name="lyrics"
           :icon="$q.screen.gt.sm ? 'list_alt' : ''"
@@ -73,9 +75,35 @@
         />
       </q-tabs>
       <q-tab-panels v-model="tab" animated>
-        <q-tab-panel name="comment">
-          <comment :comments="hotComments" title="最热评论"></comment>
-          <comment :comments="comments" title="最新评论"></comment>
+        <q-tab-panel name="comment" class="items-center">
+          <div class="row justify-start">
+            <h4
+              class="comment-title text-weight-bold"
+              v-text="commentType === 'hot' ? '最热评论' : '最新评论'"
+            ></h4>
+            <q-tabs v-model="commentType">
+              <div class="dropdown self-start">
+                <q-btn-dropdown auto-close flat dense label="More...">
+                  <q-list>
+                    <q-item clickable @click="commentType = 'hot'">
+                      <q-item-section>Hot</q-item-section>
+                    </q-item>
+
+                    <q-item clickable @click="commentType = 'new'">
+                      <q-item-section>New</q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-btn-dropdown>
+              </div>
+            </q-tabs>
+          </div>
+          <q-tab-panels v-model="commentType"
+            ><q-tab-panel name="hot">
+              <comment :comments="hotComments"></comment>
+            </q-tab-panel>
+            <q-tab-panel name="new">
+              <comment :comments="comments"></comment></q-tab-panel
+          ></q-tab-panels>
         </q-tab-panel>
 
         <q-tab-panel name="lyrics">
@@ -97,7 +125,8 @@ import {
   getMvDetail,
   getMvAddress,
   getSimiMv,
-  getMvComment
+  getMvComment,
+  getMvCommentLikeCount
 } from '../boot/axios'
 import ShowItems from '../components/ShowItems'
 import Comment from '../components/Comment'
@@ -111,9 +140,13 @@ export default {
       player: null,
       brs: [],
       tab: 'comment',
+      commentType: 'hot',
       simiMvs: [],
       comments: [],
-      hotComments: []
+      hotComments: [],
+      commentCount: 0,
+      shareCount: 0,
+      likedCount: 0
     }
   },
   methods: {
@@ -167,6 +200,20 @@ export default {
       this.comments = comments
       this.hotComments = hotComments
     },
+    async getMvCommentLikeCount() {
+      const {
+        code,
+        commentCount,
+        likedCount,
+        shareCount
+      } = await getMvCommentLikeCount(this.id)
+      if (code !== 200) {
+        return this.showNotify('deep-orange-6', '获取MV评论点赞失败', 'top')
+      }
+      this.commentCount = commentCount
+      this.likedCount = likedCount
+      this.shareCount = shareCount
+    },
 
     initPlayer() {
       //
@@ -202,6 +249,7 @@ export default {
     this.getMvDetail()
     this.getSimiMv()
     this.getMvComment()
+    this.getMvCommentLikeCount()
   },
   mounted() {
     const videoOptions = {
@@ -222,7 +270,6 @@ export default {
       loop: { active: true },
       quality: { default: 1080, options: [1080, 720, 480, 240] }
     }
-    //   this.player = new Plyr('#player', videoOptions)
     this.player = new Plyr(this.$refs.player, videoOptions)
   },
   computed: {},
@@ -254,10 +301,10 @@ export default {
     .q-tabs {
       max-width: 40vw;
     }
-    .comment-wrapper {
-      //   .comment-title {
-      //     margin-top: 0;
-      //   }
+
+    .comment-title {
+      margin-top: 0;
+      margin-bottom: 40px;
     }
   }
 }
@@ -290,11 +337,13 @@ export default {
           font-size: 10px;
         }
       }
-      .comment-wrapper {
-        // .comment-title {
-        //   font-size: 1.5rem;
-        //   margin-bottom: 15px;
-        // }
+      .q-tab-panel {
+        padding-left: 3px;
+        padding-right: 3px;
+      }
+      .comment-title {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
       }
     }
   }

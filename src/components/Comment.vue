@@ -1,6 +1,5 @@
 <template>
   <div class="comment" v-if="comments.length > 0">
-    <h4 class="comment-title text-weight-bold" v-text="title"></h4>
     <div v-for="item in comments" :key="item.id" class="row justify-between">
       <q-chat-message
         :name="item.user.nickname"
@@ -12,11 +11,10 @@
       />
       <q-btn
         flat
-        round
         color="red"
         icon="favorite"
-        dense
         :label="item.likedCount"
+        dense
         size="sm"
         class="self-start col-1"
       />
@@ -45,10 +43,6 @@ export default {
     comments: {
       type: Array,
       required: true
-    },
-    title: {
-      type: String,
-      default: 'Title'
     }
   },
   created() {},

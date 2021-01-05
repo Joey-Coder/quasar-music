@@ -180,3 +180,14 @@ export function getMvComment(id, limit, before) {
     url: `/comment/mv?id=${id}&limit=${limit}&before=${before}`
   })
 }
+
+/**
+ * 获取mv评论，点赞数量
+ * @param {Number | String} id
+ */
+export function getMvCommentLikeCount(id) {
+  return request({
+    method: 'GET',
+    url: `/mv/detail/info?mvid=${id}`
+  })
+}
