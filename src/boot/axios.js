@@ -174,10 +174,10 @@ export function getSimiMv(id) {
  * 获取mv评论
  * @param {Number | String} id
  */
-export function getMvComment(id, limit, before) {
+export function getMvComment(id, limit, offset, before) {
   return request({
     method: 'GET',
-    url: `/comment/mv?id=${id}&limit=${limit}&before=${before}`
+    url: `/comment/mv?id=${id}&limit=${limit}&offset=${offset}&before=${before}`
   })
 }
 

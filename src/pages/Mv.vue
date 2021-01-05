@@ -46,7 +46,7 @@
         </q-card-section>
       </q-card>
     </div>
-    <div class="tabs-wrapper col-10 justify-center">
+    <div class="tabs-wrapper col-10 justify-center" ref="tabsWrapper">
       <q-tabs
         v-model="tab"
         narrow-indicator
@@ -99,10 +99,18 @@
           </div>
           <q-tab-panels v-model="commentType"
             ><q-tab-panel name="hot">
-              <comment :comments="hotComments"></comment>
+              <comment
+                :comments="hotComments"
+                :commentCount="commentCount"
+              ></comment>
             </q-tab-panel>
             <q-tab-panel name="new">
-              <comment :comments="comments"></comment></q-tab-panel
+              <comment
+                :comments="comments"
+                :commentCount="commentCount"
+                type="new"
+                @changePage="changePage"
+              ></comment></q-tab-panel
           ></q-tab-panels>
         </q-tab-panel>
 
@@ -140,7 +148,7 @@ export default {
       player: null,
       brs: [],
       tab: 'comment',
-      commentType: 'hot',
+      commentType: 'new',
       simiMvs: [],
       comments: [],
       hotComments: [],
@@ -188,10 +196,11 @@ export default {
       }
       this.simiMvs = mvs
     },
-    async getMvComment(limit = 20, before = '') {
+    async getMvComment(limit = 20, offset = 0, before = '') {
       const { code, comments, hotComments } = await getMvComment(
         this.id,
         limit,
+        offset,
         before
       )
       if (code !== 200) {
@@ -214,7 +223,11 @@ export default {
       this.likedCount = likedCount
       this.shareCount = shareCount
     },
-
+    changePage(value) {
+      //   console.log(value)
+      this.getMvComment(20, value * 20)
+      this.$refs.tabsWrapper.scrollIntoView({ behavior: 'smooth' })
+    },
     initPlayer() {
       //
       const sources = this.mvUrl.map(item => {

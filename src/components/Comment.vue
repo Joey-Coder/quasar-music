@@ -19,7 +19,20 @@
         class="self-start col-1"
       />
     </div>
+
     <q-separator color="grey-3" />
+    <div class="flex flex-center q-pt-sm">
+      <q-pagination
+        v-if="type === 'new'"
+        v-model="current"
+        :max="maxPageCount"
+        :max-pages="8"
+        color="grey-7"
+        :boundary-numbers="false"
+        @input="$emit('changePage', current)"
+      >
+      </q-pagination>
+    </div>
   </div>
 </template>
 
@@ -27,7 +40,9 @@
 export default {
   name: 'Comment',
   data() {
-    return {}
+    return {
+      current: 1
+    }
   },
   methods: {
     handleTimeStamp(t) {
@@ -43,11 +58,23 @@ export default {
     comments: {
       type: Array,
       required: true
+    },
+    type: {
+      type: String,
+      default: 'hot'
+    },
+    commentCount: {
+      type: Number,
+      default: 0
     }
   },
   created() {},
   mounted() {},
-  computed: {},
+  computed: {
+    maxPageCount() {
+      return parseInt(this.commentCount / 10)
+    }
+  },
   watched: {}
 }
 </script>
