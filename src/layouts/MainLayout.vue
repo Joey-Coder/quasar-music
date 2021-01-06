@@ -118,26 +118,28 @@
     </q-header>
 
     <q-page-container>
-      <keep-alive :include="['PageIndex']">
-        <router-view :key="$route.fullPath" />
-      </keep-alive>
+      <!-- <keep-alive :include="['PageIndex']"> -->
+      <router-view :key="$route.fullPath" />
+      <!-- </keep-alive> -->
     </q-page-container>
 
     <q-footer elevated class="bg-grey-8 text-white">
       <q-toolbar>
         <q-toolbar-title>
           <q-avatar>
-            <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" />
+            <img :src="musicCover" />
           </q-avatar>
-          Title
         </q-toolbar-title>
+        <audio :src="musicUrl" autoplay loop ref="player"></audio>
       </q-toolbar>
     </q-footer>
   </q-layout>
 </template>
 
 <script>
+// import store from '../store'
 export default {
+  // store,
   data() {
     return {
       text: '',
@@ -175,7 +177,23 @@ export default {
   computed: {
     isXsAndSearch() {
       return this.$q.screen.lt.sm && !this.centerVisiable
+    },
+    musicCover() {
+      return this.$store.state.musicCover
+    },
+    musicUrl() {
+      return this.$store.state.musicUrl
     }
+  },
+  watch: {
+    // musicUrl: {
+    //   handler(newValue, oldValue) {
+    //     console.log('sfdsfsd')
+    //     this.cover = newValue
+    //   },
+    //   deep: true,
+    //   immediate: true
+    // }
   },
   mounted() {
     this.interval = setInterval(this.showProgress, 500)

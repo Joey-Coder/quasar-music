@@ -202,3 +202,25 @@ export function getAlbum(id) {
     url: `/album?id=${id}`
   })
 }
+
+/**
+ * 检查音乐是否可用
+ * @param {Number | String} id
+ */
+export function checkMusic(id) {
+  return request({
+    method: 'GET',
+    url: `/check/music?id=${id}`
+  })
+}
+
+/**
+ * 获取音乐播放地址
+ * @param {Number | String} id
+ */
+export function getMusicUrl(id) {
+  return request({
+    method: 'GET',
+    url: `/song/url?id=${id}`
+  })
+}

@@ -17,11 +17,15 @@ Vue.use(Vuex)
 export default function(/* { ssrContext } */) {
   const Store = new Vuex.Store({
     state: {
-      cacheList: []
+      musicUrl: '',
+      musicCover: ''
     },
     mutations: {
-      addCache(state, path) {
-        state.cacheList.push(path)
+      setMusicUrl(state, url) {
+        state.musicUrl = url
+      },
+      setMusicCover(state, url) {
+        state.musicCover = url
       }
     },
     modules: {
