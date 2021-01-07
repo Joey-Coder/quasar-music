@@ -16,7 +16,7 @@
           class="row justify-between"
           v-for="item in songList"
           :key="item.id"
-          @click="handleClick(item.id, item.al.picUrl)"
+          @click="handleClick(item)"
         >
           <q-item-section avatar>
             <q-avatar>
@@ -56,13 +56,14 @@
 </template>
 
 <script>
-import { checkMusic, getMusicUrl } from '../boot/axios'
 // import store from '../store'
 export default {
   name: '',
   // store,
   data() {
-    return {}
+    return {
+      musicId: 0
+    }
   },
   methods: {
     showNotify(color, message, position) {
@@ -90,30 +91,14 @@ export default {
     calcSongSize(value) {
       return (parseInt(value) / 1000 / 60).toFixed(2)
     },
-    async checkMusic(id) {
-      const { success } = await checkMusic(id)
-      if (!success) {
-        this.showNotify('deep-orange-6', '检查音乐是否可用播放失败', 'top')
+
+    async handleClick(item) {
+      this.$store.commit('setSongInfo', item)
+      // 区分是否切歌
+      if (item.id === this.musicId) {
+        this.$store.commit('setIsPaused', !this.isPaused)
       }
-      return success
-    },
-    async getMusicUrl(id) {
-      const { code, data } = await getMusicUrl(id)
-      if (code !== 200) {
-        return this.showNotify('deep-orange-6', '获取音乐播放地址失败', 'top')
-      }
-      if (data.length > 0) {
-        this.$store.commit('setMusicUrl', data[0].url)
-      }
-    },
-    async handleClick(id, cover) {
-      console.log('click song')
-      const check = await this.checkMusic(id)
-      console.log(check)
-      if (check === true) {
-        this.$store.commit('setMusicCover', cover)
-        this.getMusicUrl(id)
-      }
+      this.musicId = item.id
     }
   },
   components: {},
@@ -147,7 +132,11 @@ export default {
   },
   created() {},
   mounted() {},
-  computed: {},
+  computed: {
+    isPaused() {
+      return this.$store.state.isPaused
+    }
+  },
   watched: {}
 }
 </script>

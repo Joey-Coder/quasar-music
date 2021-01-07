@@ -17,15 +17,17 @@ Vue.use(Vuex)
 export default function(/* { ssrContext } */) {
   const Store = new Vuex.Store({
     state: {
-      musicUrl: '',
-      musicCover: ''
+      songInfo: {
+        al: { picUrl: 'https://cdn.quasar.dev/logo/svg/quasar-logo.svg' }
+      },
+      isPaused: true
     },
     mutations: {
-      setMusicUrl(state, url) {
-        state.musicUrl = url
+      setSongInfo(state, info) {
+        state.songInfo = info
       },
-      setMusicCover(state, url) {
-        state.musicCover = url
+      setIsPaused(state, value) {
+        state.isPaused = value
       }
     },
     modules: {

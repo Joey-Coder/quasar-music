@@ -123,21 +123,15 @@
       <!-- </keep-alive> -->
     </q-page-container>
 
-    <q-footer elevated class="bg-grey-8 text-white">
-      <q-toolbar>
-        <q-toolbar-title>
-          <q-avatar>
-            <img :src="musicCover" />
-          </q-avatar>
-        </q-toolbar-title>
-        <audio :src="musicUrl" autoplay loop ref="player"></audio>
-      </q-toolbar>
+    <q-footer class="bg-grey-3 text-dark">
+      <player></player>
     </q-footer>
   </q-layout>
 </template>
 
 <script>
 // import store from '../store'
+import Player from '../components/Player'
 export default {
   // store,
   data() {
@@ -177,12 +171,6 @@ export default {
   computed: {
     isXsAndSearch() {
       return this.$q.screen.lt.sm && !this.centerVisiable
-    },
-    musicCover() {
-      return this.$store.state.musicCover
-    },
-    musicUrl() {
-      return this.$store.state.musicUrl
     }
   },
   watch: {
@@ -200,6 +188,9 @@ export default {
   },
   beforeDestroy() {
     clearInterval(this.interval)
+  },
+  components: {
+    Player
   }
 }
 </script>
@@ -225,6 +216,8 @@ export default {
         }
       }
     }
+  }
+  .q-footer {
   }
 }
 </style>
