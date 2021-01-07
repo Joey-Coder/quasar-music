@@ -18,7 +18,11 @@ export default function(/* { ssrContext } */) {
   const Store = new Vuex.Store({
     state: {
       songInfo: {
-        al: { picUrl: 'https://cdn.quasar.dev/logo/svg/quasar-logo.svg' }
+        al: {
+          picUrl: 'https://cdn.quasar.dev/logo/svg/quasar-logo.svg',
+          name: ''
+        },
+        ar: [{ name: '' }]
       },
       isPaused: true
     },

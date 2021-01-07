@@ -1,5 +1,13 @@
 <template>
   <div class="player row justify-between items-center">
+    <q-slider
+      v-model="currentTime"
+      :min="0"
+      :max="getDuration"
+      dense
+      @input="changeAudioCurrentTime"
+      class="song-slider"
+    />
     <div class="control-wrapper row">
       <div class="btn-group">
         <q-btn flat round icon="skip_previous" size="md"></q-btn>
@@ -17,19 +25,47 @@
         <div class="q-pl-xs">{{ getDuration | showTime }}</div>
       </div>
     </div>
-    <div class="info-wrapper">
+    <div class="info-wrapper row justify-between items-center q-gutter-x-md">
       <q-avatar rounded>
         <img :src="musicCover" />
       </q-avatar>
+      <div class="title column justify-center items-start">
+        <div class="song-name text-h6">{{ getSongName }}</div>
+        <div class="row  justify-start text-grey-8 q-gutter-x-sm">
+          <div class="artist">{{ getArtistName }}</div>
+          <div class="album">{{ getAlbumName }}</div>
+        </div>
+      </div>
     </div>
-    <div class="tool-wrapper"></div>
+    <div class="tool-wrapper row justify-between items-center">
+      <div class="volume-wrapper row justify-between items-center no-wrap">
+        <q-slider
+          v-model="currentVolume"
+          :min="0"
+          :max="1"
+          :step="0.01"
+          dense
+          @input="changeAudioVolume"
+          class="volume-slider"
+        />
+        <q-btn
+          flat
+          round
+          class="volume-btn"
+          :icon="currentVolume > 0 ? 'volume_up' : 'volume_off'"
+          @click="mutedAudio"
+        ></q-btn>
+      </div>
 
+      <q-btn flat round icon="repeat"></q-btn>
+    </div>
     <audio
       :src="musicUrl"
       autoplay
       loop
       ref="audio"
       @timeupdate="timeUpdate"
+      @volumechange="volumeChange"
     ></audio>
   </div>
 </template>
@@ -42,7 +78,8 @@ export default {
     return {
       musicUrl: '',
       currentTime: 0,
-      debace: true
+      debace: true,
+      currentVolume: 0.5
     }
   },
   methods: {
@@ -76,6 +113,41 @@ export default {
           this.debace = true
         }, 900)
       }
+    },
+    changeAudioCurrentTime(value) {
+      this.$refs.audio.currentTime = value
+    },
+    changeAudioVolume(value) {
+      console.log('volume:', value)
+      document.querySelector('.volume-slider').style.visibility = 'visible'
+      this.$refs.audio.volume = value
+    },
+    visiableVolumeSlider() {
+      const volumeWrapper = document.querySelector('.volume-wrapper')
+      const volumeSlider = document.querySelector('.volume-slider')
+      volumeWrapper.addEventListener('mouseenter', () => {
+        // console.log('enter')
+        volumeSlider.style.visibility = 'visible'
+      })
+      volumeWrapper.addEventListener('mouseleave', () => {
+        // console.log('leave')
+        setTimeout(() => {
+          volumeSlider.style.visibility = 'hidden'
+        }, 2000)
+      })
+    },
+    volumeChange(event) {
+      console.log('changeVolume', event.target.volume)
+    },
+    mutedAudio() {
+      if (!this.$refs.audio.muted) {
+        this.$refs.audio.muted = true
+        this.currentVolume = 0
+        // this.changeAudioVolume(0)
+      } else {
+        this.$refs.audio.muted = false
+        this.currentVolume = this.$refs.audio.volume
+      }
     }
   },
   components: {},
@@ -83,6 +155,8 @@ export default {
   created() {},
   mounted() {
     //   this.$refs.audio.
+    this.changeAudioCurrentTime(this.currentVolume)
+    this.visiableVolumeSlider()
   },
   computed: {
     musicCover() {
@@ -96,6 +170,15 @@ export default {
     },
     getDuration() {
       return this.$store.state.songInfo.dt / 1000 || 0
+    },
+    getSongName() {
+      return this.$store.state.songInfo.name || ''
+    },
+    getArtistName() {
+      return this.$store.state.songInfo.ar[0].name || ''
+    },
+    getAlbumName() {
+      return this.$store.state.songInfo.al.name || ''
     }
 
     // songInfo() {
@@ -141,6 +224,17 @@ export default {
 .player {
   height: 100%;
   width: 100%;
+  position: relative;
+  .song-slider {
+    position: absolute;
+    top: -10px;
+    ::v-deep .q-slider__thumb {
+      visibility: hidden;
+      &:focus {
+        visibility: visible;
+      }
+    }
+  }
   .control-wrapper {
     width: auto;
     height: 100%;
@@ -150,6 +244,17 @@ export default {
   }
   .info-wrapper {
     padding: 8px 0;
+  }
+  .tool-wrapper {
+    width: auto;
+    .volume-wrapper {
+      width: auto;
+      .volume-slider {
+        visibility: hidden;
+        height: 5px;
+        width: 8vw;
+      }
+    }
   }
 }
 </style>
