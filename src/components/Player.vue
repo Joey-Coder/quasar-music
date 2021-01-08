@@ -1,5 +1,5 @@
 <template>
-  <div class="player row justify-between items-center">
+  <div class="player row justify-between items-center" v-show="changeSongId">
     <q-slider
       v-model="currentTime"
       :min="0"
@@ -62,7 +62,9 @@
         round
         :icon="loop ? 'repeat_one' : 'repeat'"
         @click="loop = !loop"
+        class="repeat-btn"
       ></q-btn>
+      <q-btn flat round icon="arrow_drop_up"></q-btn>
     </div>
     <audio
       :src="musicUrl"
@@ -71,6 +73,42 @@
       ref="audio"
       @timeupdate="timeUpdate"
     ></audio>
+    <q-fab
+      color="primary"
+      text-color="white"
+      icon="keyboard_arrow_left"
+      direction="left"
+      padding="sm"
+      :persistent="false"
+      glossy
+    >
+      <q-fab-action
+        color="primary"
+        text-color="white"
+        @click="loop = !loop"
+        :icon="loop ? 'repeat_one' : 'repeat'"
+        padding="xs"
+        glossy
+      />
+      <q-fab-action
+        color="primary"
+        text-color="white"
+        class="volume-btn"
+        :icon="currentVolume > 0 ? 'volume_up' : 'volume_off'"
+        @click="mutedAudio"
+        padding="xs"
+        glossy
+      ></q-fab-action>
+      <q-slider
+        v-model="currentVolume"
+        :min="0"
+        :max="1"
+        :step="0.01"
+        dense
+        @input="changeAudioVolume"
+        class="volume-slider"
+      />
+    </q-fab>
   </div>
 </template>
 
@@ -90,7 +128,7 @@ export default {
   methods: {
     handlePlay() {
       if (this.musicUrl !== '') {
-        console.log('clickPlay')
+        // console.log('clickPlay')
         this.$store.commit('setIsPaused', !this.isPaused)
       }
     },
@@ -123,7 +161,7 @@ export default {
       this.$refs.audio.currentTime = value
     },
     changeAudioVolume(value) {
-      console.log('volume:', value)
+      //   console.log('volume:', value)
       document.querySelector('.volume-slider').style.visibility = 'visible'
       this.$refs.audio.volume = value
     },
@@ -193,7 +231,7 @@ export default {
   watch: {
     isPaused: function(newValue, oldValue) {
       oldValue ? this.$refs.audio.play() : this.$refs.audio.pause()
-      console.log(this.$refs.audio.currentTime)
+      //   console.log(this.$refs.audio.currentTime)
     },
     changeSongId: async function(newValue, oldValue) {
       //   console.log('changeSongID')
@@ -258,6 +296,59 @@ export default {
         visibility: hidden;
         height: 5px;
         width: 8vw;
+      }
+    }
+  }
+  .q-fab {
+    display: none;
+    //     position: fixed;
+    //     bottom: 12vh;
+    //     right: 10px;
+    //     .volume-slider {
+    //       height: 5px;
+    //       width: 8vw;
+    //     }
+  }
+}
+
+@media (max-width: $breakpoint-xs-max) {
+  .player {
+    .control-wrapper {
+      .time {
+        display: none;
+      }
+    }
+    .info-wrapper {
+      .q-avatar {
+        display: none;
+      }
+      .title {
+        .song-name,
+        .album,
+        .artist {
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 1;
+          overflow: hidden;
+        }
+      }
+    }
+    .tool-wrapper {
+      .volume-wrapper {
+        display: none;
+      }
+      .repeat-btn {
+        display: none;
+      }
+    }
+    .q-fab {
+      display: block;
+      position: fixed;
+      bottom: 12vh;
+      right: 10px;
+      .volume-slider {
+        height: 5px;
+        width: 20vw;
       }
     }
   }
