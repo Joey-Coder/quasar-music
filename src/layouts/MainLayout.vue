@@ -118,9 +118,9 @@
     </q-header>
 
     <q-page-container>
-      <!-- <keep-alive :include="['PageIndex']"> -->
-      <router-view :key="$route.fullPath" />
-      <!-- </keep-alive> -->
+      <keep-alive :include="['PageIndex', 'Artist', 'PlayList']">
+        <router-view :key="$route.fullPath" />
+      </keep-alive>
     </q-page-container>
 
     <q-footer class="bg-grey-3 text-dark">

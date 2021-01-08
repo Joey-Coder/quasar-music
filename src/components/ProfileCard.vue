@@ -35,7 +35,10 @@
           >
             {{ playlist.description && playlist.description.trim() }}
           </div>
-          <div class="text-h6 text-weight-regular text-grey-9 desc items-start" v-else>
+          <div
+            class="text-h6 text-weight-regular text-grey-9 desc items-start"
+            v-else
+          >
             {{ playlist.ar[0].name }} / {{ playlist.al.name }}
           </div>
         </div>
@@ -46,7 +49,7 @@
           dense
           v-if="type === 'Artist' && !$q.screen.lt.md"
         >
-          {{ calcSongCount() }} p
+          {{ calcSongCount }} p
         </q-chip>
       </q-card-section>
       <!-- <q-separator vertical></q-separator> -->
@@ -83,14 +86,6 @@ export default {
   methods: {
     calcSongSize(value) {
       return (parseInt(value) / 1000 / 60).toFixed(2)
-    },
-    calcSongCount() {
-      //   if (this.playlist.trackIds) {
-      return (
-        this.playlist.size ||
-        this.playlist.musicSize ||
-        this.playlist.trackIds.length
-      )
     }
   },
   components: {},
@@ -112,7 +107,16 @@ export default {
   updated() {
     // console.log('updated', this.playlist)
   },
-  computed: {},
+  computed: {
+    calcSongCount() {
+      //   if (this.playlist.trackIds) {
+      return (
+        this.playlist.size ||
+        this.playlist.musicSize ||
+        this.playlist.trackIds.length
+      )
+    }
+  },
   watched: {}
 }
 </script>
