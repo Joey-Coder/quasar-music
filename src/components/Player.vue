@@ -64,7 +64,12 @@
         @click="loop = !loop"
         class="repeat-btn"
       ></q-btn>
-      <q-btn flat round icon="arrow_drop_up"></q-btn>
+      <q-btn
+        flat
+        round
+        icon="arrow_drop_up"
+        @click="goTo(changeSongId)"
+      ></q-btn>
     </div>
     <audio
       :src="musicUrl"
@@ -122,10 +127,20 @@ export default {
       currentTime: 0,
       debace: true,
       currentVolume: 0.5,
-      loop: false
+      loop: false,
+      showSong: false
     }
   },
   methods: {
+    goTo(id) {
+      if (!this.showSong) {
+        console.log(id)
+        this.$router.push({ name: 'song', params: { id } })
+      } else {
+        this.$router.go(-1)
+      }
+      this.showSong = !this.showSong
+    },
     handlePlay() {
       if (this.musicUrl !== '') {
         // console.log('clickPlay')

@@ -7,8 +7,15 @@
       ]"
       flat
     >
-      <q-img class="col-4 " :src="playlist.coverImgUrl || playlist.picUrl">
-        <q-badge transparent class="badge" v-show="$q.screen.lt.md">
+      <q-img
+        class="col-4 "
+        :src="playlist.coverImgUrl || playlist.picUrl || playlist.al.picUrl"
+      >
+        <q-badge
+          transparent
+          class="badge"
+          v-if="type === 'Artist' && $q.screen.lt.md"
+        >
           {{ calcSongCount }}p
         </q-badge></q-img
       >
@@ -21,17 +28,25 @@
         >
           {{ playlist.name && playlist.name.trim() }}
         </div>
-        <div class="text-h6 text-weight-regular text-grey-9 desc col-12">
-          {{ playlist.description && playlist.description.trim() }}
+        <div class="col-12">
+          <div
+            class="text-h6 text-weight-regular text-grey-9 desc"
+            v-if="type === 'Artist'"
+          >
+            {{ playlist.description && playlist.description.trim() }}
+          </div>
+          <div class="text-h6 text-weight-regular text-grey-9 desc items-start" v-else>
+            {{ playlist.ar[0].name }} / {{ playlist.al.name }}
+          </div>
         </div>
         <q-chip
           color="primary"
           text-color="white"
           icon="album"
           dense
-          v-show="!$q.screen.lt.md"
+          v-if="type === 'Artist' && !$q.screen.lt.md"
         >
-          {{ calcSongCount }} p
+          {{ calcSongCount() }} p
         </q-chip>
       </q-card-section>
       <!-- <q-separator vertical></q-separator> -->
@@ -68,6 +83,14 @@ export default {
   methods: {
     calcSongSize(value) {
       return (parseInt(value) / 1000 / 60).toFixed(2)
+    },
+    calcSongCount() {
+      //   if (this.playlist.trackIds) {
+      return (
+        this.playlist.size ||
+        this.playlist.musicSize ||
+        this.playlist.trackIds.length
+      )
     }
   },
   components: {},
@@ -77,6 +100,10 @@ export default {
       default: function() {
         return { coverImgUrl: '' }
       }
+    },
+    type: {
+      type: String,
+      default: 'Artist'
     }
   },
   created() {
@@ -85,18 +112,7 @@ export default {
   updated() {
     // console.log('updated', this.playlist)
   },
-  computed: {
-    calcSongCount() {
-      //   if (this.playlist.trackIds) {
-      return (
-        this.playlist.size ||
-        this.playlist.musicSize ||
-        this.playlist.trackIds.length
-      )
-      //   }
-      //   return 0
-    }
-  },
+  computed: {},
   watched: {}
 }
 </script>
