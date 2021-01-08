@@ -57,15 +57,19 @@
         ></q-btn>
       </div>
 
-      <q-btn flat round icon="repeat"></q-btn>
+      <q-btn
+        flat
+        round
+        :icon="loop ? 'repeat_one' : 'repeat'"
+        @click="loop = !loop"
+      ></q-btn>
     </div>
     <audio
       :src="musicUrl"
       autoplay
-      loop
+      :loop="loop"
       ref="audio"
       @timeupdate="timeUpdate"
-      @volumechange="volumeChange"
     ></audio>
   </div>
 </template>
@@ -79,7 +83,8 @@ export default {
       musicUrl: '',
       currentTime: 0,
       debace: true,
-      currentVolume: 0.5
+      currentVolume: 0.5,
+      loop: false
     }
   },
   methods: {
@@ -136,9 +141,9 @@ export default {
         }, 2000)
       })
     },
-    volumeChange(event) {
-      console.log('changeVolume', event.target.volume)
-    },
+    // volumeChange(event) {
+    //   console.log('changeVolume', event.target.volume)
+    // },
     mutedAudio() {
       if (!this.$refs.audio.muted) {
         this.$refs.audio.muted = true
