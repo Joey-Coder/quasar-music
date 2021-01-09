@@ -46,8 +46,16 @@
         </q-card-section>
       </q-card>
     </div>
-    <div class="tabs-wrapper col-10 justify-center" ref="tabsWrapper">
-      <q-tabs
+    <div class="tabs-wrapper col-10 ">
+      <tabs
+        :commentCount="commentCount"
+        :hotComments="hotComments"
+        :comments="comments"
+        :simiItems="simiMvs"
+        path="mv"
+        @changePage="changePage"
+      ></tabs>
+      <!-- <q-tabs
         v-model="tab"
         narrow-indicator
         align="justify"
@@ -122,7 +130,7 @@
         <q-tab-panel name="more">
           <show-items title="相似MV" :itemList="simiMvs" path="mv"></show-items>
         </q-tab-panel>
-      </q-tab-panels>
+      </q-tab-panels> -->
     </div>
   </q-page>
 </template>
@@ -137,8 +145,9 @@ import {
   getMvComment,
   getMvCommentLikeCount
 } from '../boot/axios'
-import ShowItems from '../components/ShowItems'
-import Comment from '../components/Comment'
+// import ShowItems from '../components/ShowItems'
+// import Comment from '../components/Comment'
+import Tabs from '../components/Tabs'
 export default {
   name: 'Mv',
   data() {
@@ -248,8 +257,9 @@ export default {
     }
   },
   components: {
-    ShowItems,
-    Comment
+    // ShowItems,
+    // Comment,
+    Tabs
   },
   props: {
     id: {
@@ -308,20 +318,20 @@ export default {
       }
     }
   }
-  .tabs-wrapper {
-    margin-top: 50px;
-    .q-tabs {
-      max-width: 40vw;
-    }
-    .show-items {
-      padding-top: 0;
-    }
+  // .tabs-wrapper {
+  //   margin-top: 50px;
+  //   .q-tabs {
+  //     max-width: 40vw;
+  //   }
+  //   .show-items {
+  //     padding-top: 0;
+  //   }
 
-    .comment-title {
-      margin-top: 0;
-      margin-bottom: 40px;
-    }
-  }
+  //   .comment-title {
+  //     margin-top: 0;
+  //     margin-bottom: 40px;
+  //   }
+  // }
 }
 
 @media (max-width: $breakpoint-md-min) {
@@ -344,23 +354,23 @@ export default {
         }
       }
     }
-    .tabs-wrapper {
-      margin-top: 10px;
-      .q-tabs {
-        max-width: 60vw;
-        .tab-icon {
-          font-size: 10px;
-        }
-      }
-      .q-tab-panel {
-        padding-left: 3px;
-        padding-right: 3px;
-      }
-      .comment-title {
-        font-size: 1.5rem;
-        margin-bottom: 15px;
-      }
-    }
+    // .tabs-wrapper {
+    //   margin-top: 10px;
+    //   .q-tabs {
+    //     max-width: 60vw;
+    //     .tab-icon {
+    //       font-size: 10px;
+    //     }
+    //   }
+    //   .q-tab-panel {
+    //     padding-left: 3px;
+    //     padding-right: 3px;
+    //   }
+    //   .comment-title {
+    //     font-size: 1.5rem;
+    //     margin-bottom: 15px;
+    //   }
+    // }
   }
 }
 </style>

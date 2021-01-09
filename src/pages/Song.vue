@@ -8,12 +8,16 @@
 
 <script>
 import ProfileCard from '../components/ProfileCard'
-import { getListAllSong } from '../boot/axios'
+import { getListAllSong, getSongComment, getSimiSong } from '../boot/axios'
 export default {
   name: 'Song',
   data() {
     return {
-      songInfo: this.$store.state.songInfo
+      songInfo: this.$store.state.songInfo,
+      comments: [],
+      hotComments: [],
+      simiSongs: [],
+      commentCount: 0
     }
   },
   methods: {
@@ -26,6 +30,27 @@ export default {
         this.showNotify('deep-orange-6', '获取歌曲详情失败', 'top')
       }
       this.songInfo = songs[0]
+    },
+    async getSongComment(limit = 20, offset = 0, before = '') {
+      const { code, comments, hotComments, total } = await getSongComment(
+        this.id,
+        limit,
+        offset,
+        before
+      )
+      if (code !== 200) {
+        return this.showNotify('deep-orange-6', '获取mv评论失败', 'top')
+      }
+      this.comments = comments
+      this.hotComments = hotComments
+      this.commentCount = total
+    },
+    async getSimiSong() {
+      const { code, songs } = await getSimiSong(this.id)
+      if (code !== 200) {
+        return this.showNotify('deep-orange-6', '获取相似MV失败', 'top')
+      }
+      this.simiSongs = songs
     }
   },
   components: {
@@ -38,13 +63,15 @@ export default {
     }
   },
   created() {
-    console.log('created')
+    // console.log('created')
     if (!this.songInfo.id) {
       console.log('vuex is null')
       this.getSongDetail()
     } else {
       console.log('get from vuex')
     }
+    this.getSongComment()
+    this.getSimiSong()
   },
   mounted() {},
   computed: {

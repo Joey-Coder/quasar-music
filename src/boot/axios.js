@@ -224,3 +224,25 @@ export function getMusicUrl(id) {
     url: `/song/url?id=${id}`
   })
 }
+
+/**
+ * 获取歌曲评论
+ * @param {Number | String} id
+ */
+export function getSongComment(id, limit = 20, offset = 0, before) {
+  return request({
+    method: 'GET',
+    url: `/comment/music?id=${id}&limit=${limit}&offset=${offset}&before=${before}`
+  })
+}
+
+/**
+ * 获取相似mv
+ * @param {Number | String} id
+ */
+export function getSimiSong(id) {
+  return request({
+    method: 'GET',
+    url: `/simi/song?id=${id}`
+  })
+}
