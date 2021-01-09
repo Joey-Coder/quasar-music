@@ -28,7 +28,11 @@
       </div>
       <!-- 推荐新歌 -->
       <div class="recommend-new-song">
-        <show-items title="新歌速递" :itemList="recomandNewSong"></show-items>
+        <show-items
+          title="新歌速递"
+          :itemList="recomandNewSong"
+          path="song"
+        ></show-items>
       </div>
       <!-- 排行榜单 -->
       <div class="top-list">

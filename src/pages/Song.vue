@@ -29,7 +29,13 @@ export default {
   name: 'Song',
   data() {
     return {
-      songInfo: this.$store.state.songInfo,
+      songInfo: {
+        al: {
+          picUrl: 'https://cdn.quasar.dev/logo/svg/quasar-logo.svg',
+          name: ''
+        },
+        ar: [{ name: '' }]
+      },
       comments: [],
       hotComments: [],
       simiSongs: [],
@@ -88,13 +94,7 @@ export default {
     }
   },
   created() {
-    // console.log('created')
-    if (!this.songInfo.id) {
-      console.log('vuex is null')
-      this.getSongDetail()
-    } else {
-      console.log('get from vuex')
-    }
+    this.getSongDetail()
     this.getSongComment()
     this.getSimiSong()
   },

@@ -26,6 +26,7 @@
               color="accent"
               icon="headset"
               :size="$q.screen.lt.sm ? 'sm' : 'md'"
+              @click="clickPlay"
             />
             <q-btn
               flat
@@ -56,82 +57,6 @@
         simiTitle="相似mv"
         @changePage="changePage"
       ></tabs>
-      <!-- <q-tabs
-        v-model="tab"
-        narrow-indicator
-        align="justify"
-        style="margin: 0 auto"
-      >
-        <q-tab
-          name="comment"
-          :icon="$q.screen.gt.sm ? 'chat' : ''"
-          label="评论"
-          class="text-accent tab-icon"
-        >
-          <q-badge color="red" floating>{{ commentCount }}</q-badge></q-tab
-        >
-        <q-tab
-          name="lyrics"
-          :icon="$q.screen.gt.sm ? 'list_alt' : ''"
-          label="歌词"
-          class="text-red tab-icon"
-        />
-        <q-tab
-          name="more"
-          :icon="$q.screen.gt.sm ? 'movie' : ''"
-          label="更多"
-          class="text-primary tab-icon"
-        />
-      </q-tabs>
-      <q-tab-panels v-model="tab" animated>
-        <q-tab-panel name="comment" class="items-center">
-          <div class="row justify-start">
-            <h4
-              class="comment-title text-weight-bold"
-              v-text="commentType === 'hot' ? '最热评论' : '最新评论'"
-            ></h4>
-            <q-tabs v-model="commentType">
-              <div class="dropdown self-start">
-                <q-btn-dropdown auto-close flat dense label="More...">
-                  <q-list>
-                    <q-item clickable @click="commentType = 'hot'">
-                      <q-item-section>Hot</q-item-section>
-                    </q-item>
-
-                    <q-item clickable @click="commentType = 'new'">
-                      <q-item-section>New</q-item-section>
-                    </q-item>
-                  </q-list>
-                </q-btn-dropdown>
-              </div>
-            </q-tabs>
-          </div>
-          <q-tab-panels v-model="commentType"
-            ><q-tab-panel name="hot">
-              <comment
-                :comments="hotComments"
-                :commentCount="commentCount"
-              ></comment>
-            </q-tab-panel>
-            <q-tab-panel name="new">
-              <comment
-                :comments="comments"
-                :commentCount="commentCount"
-                type="new"
-                @changePage="changePage"
-              ></comment></q-tab-panel
-          ></q-tab-panels>
-        </q-tab-panel>
-
-        <q-tab-panel name="lyrics">
-          <h4 class="comment-title text-weight-bold">歌词</h4>
-          未搜索到歌词
-        </q-tab-panel>
-
-        <q-tab-panel name="more">
-          <show-items title="相似MV" :itemList="simiMvs" path="mv"></show-items>
-        </q-tab-panel>
-      </q-tab-panels> -->
     </div>
   </q-page>
 </template>
@@ -146,8 +71,6 @@ import {
   getMvComment,
   getMvCommentLikeCount
 } from '../boot/axios'
-// import ShowItems from '../components/ShowItems'
-// import Comment from '../components/Comment'
 import Tabs from '../components/Tabs'
 export default {
   name: 'Mv',
@@ -238,6 +161,13 @@ export default {
       this.getMvComment(20, value * 20)
       this.$refs.tabsWrapper.scrollIntoView({ behavior: 'smooth' })
     },
+    clickPlay() {
+      console.log('clickPlay')
+      if (!this.isPause) {
+        this.$store.commit('setIsPaused', true)
+      }
+      this.player.togglePlay()
+    },
     initPlayer() {
       const sources = this.mvUrl.map(item => {
         // console.log(url)
@@ -255,6 +185,13 @@ export default {
         sources: sources,
         poster: this.mvCover
       }
+      this.player.on('playing', event => {
+        console.log('playing event')
+        if (!this.isPause) {
+          this.$store.commit('setIsPaused', true)
+        }
+        this.player.play()
+      })
     }
   },
   components: {
@@ -295,7 +232,11 @@ export default {
     }
     this.player = new Plyr(this.$refs.player, videoOptions)
   },
-  computed: {},
+  computed: {
+    isPaused() {
+      return this.$store.state.isPaused
+    }
+  },
   watched: {}
 }
 </script>
