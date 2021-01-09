@@ -9,7 +9,13 @@
       >
         <!-- <router-link to="/listdetail/${item.id}"> -->
         <q-img
-          :src="item.picUrl || item.coverImgUrl || item.imgurl || item.cover"
+          :src="
+            item.picUrl ||
+              item.coverImgUrl ||
+              item.imgurl ||
+              item.cover ||
+              item.album.picUrl
+          "
           style="height: 70%"
           transition="scale"
           round

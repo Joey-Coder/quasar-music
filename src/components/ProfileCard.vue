@@ -61,7 +61,13 @@
         ]"
         align="left"
       >
-        <q-btn flat round color="teal" icon="headset">
+        <q-btn
+          flat
+          round
+          color="teal"
+          icon="headset"
+          @click="$emit('handlePlay')"
+        >
           <q-tooltip anchor="center left">
             播放
           </q-tooltip>
@@ -142,6 +148,7 @@ export default {
     .q-img {
       object-fit: cover;
       height: 300px;
+      background-position: left top;
       .badge {
         text-align: left;
         height: 18px;

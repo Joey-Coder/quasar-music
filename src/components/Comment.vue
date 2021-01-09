@@ -22,15 +22,16 @@
       </div>
 
       <q-separator color="grey-3" />
-      <div class="flex flex-center q-pt-sm">
+      <div class="flex flex-center q-pt-sm no-wrap">
         <q-pagination
           v-if="type === 'new'"
           v-model="current"
           :max="maxPageCount"
-          :max-pages="8"
+          :max-pages="6"
           color="grey-7"
           :boundary-numbers="false"
           @input="$emit('changePage', current)"
+          :size="$q.screen.lt.sm ? 'sm' : 'md'"
         >
         </q-pagination>
       </div>
@@ -85,17 +86,20 @@ export default {
 </script>
 <style scoped lang="scss">
 .comment {
-  .comment-title {
-    margin-top: 0;
-    margin-bottom: 40px;
-  }
+  // .comment-title {
+  //   margin-top: 0;
+  //   margin-bottom: 40px;
+  // }
 }
 
 @media (max-width: $breakpoint-md-min) {
   .comment {
-    .comment-title {
-      font-size: 1.5rem;
-      margin-bottom: 15px;
+    // .comment-title {
+    //   font-size: 1.5rem;
+    //   margin-bottom: 15px;
+    // }
+    .q-pagination {
+      // padding: '5px';
     }
   }
 }

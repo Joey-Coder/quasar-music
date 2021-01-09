@@ -53,6 +53,7 @@
         :comments="comments"
         :simiItems="simiMvs"
         path="mv"
+        simiTitle="相似mv"
         @changePage="changePage"
       ></tabs>
       <!-- <q-tabs

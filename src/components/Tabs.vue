@@ -74,7 +74,7 @@
 
       <q-tab-panel name="more">
         <show-items
-          title="相似MV"
+          :title="simiTitle"
           :itemList="simiItems"
           :path="path"
         ></show-items>
@@ -89,7 +89,10 @@ import Comment from '../components/Comment'
 export default {
   name: 'Tabs',
   data() {
-    return {}
+    return {
+      tab: this.initTab,
+      commentType: this.initCommentType
+    }
   },
   methods: {
     changePage(value) {
@@ -107,13 +110,9 @@ export default {
       type: Number,
       default: 0
     },
-    tab: {
+    initTab: {
       type: String,
       default: 'comment'
-    },
-    commentType: {
-      type: String,
-      default: 'hot'
     },
     hotComments: {
       type: Array,
@@ -136,6 +135,14 @@ export default {
     path: {
       type: String,
       default: 'mv'
+    },
+    simiTitle: {
+      type: String,
+      default: '相似mv'
+    },
+    initCommentType: {
+      type: String,
+      default: 'hot'
     }
   },
   created() {},
