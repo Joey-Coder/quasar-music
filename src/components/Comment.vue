@@ -31,7 +31,7 @@
           color="grey-7"
           :boundary-numbers="false"
           @input="$emit('changePage', current)"
-          :size="$q.screen.lt.sm ? 'sm' : 'md'"
+          :size="$q.screen.lt.sm ? 'xs' : 'md'"
         >
         </q-pagination>
       </div>

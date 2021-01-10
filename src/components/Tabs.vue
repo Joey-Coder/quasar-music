@@ -19,6 +19,7 @@
         :icon="$q.screen.gt.sm ? 'list_alt' : ''"
         label="歌词"
         class="text-red tab-icon"
+        @click="$refs.tabsWrapper.scrollIntoView({ behavior: 'smooth' })"
       />
       <q-tab
         name="more"
@@ -69,7 +70,34 @@
 
       <q-tab-panel name="lyrics">
         <h4 class="comment-title text-weight-bold">歌词</h4>
-        未搜索到歌词
+        <q-scroll-area
+          style="height: 80vh; "
+          class="lyric-scroll"
+          ref="lyricScroll"
+        >
+          <!-- <div v-for="n in 100" :key="n" class="q-py-xs">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </div> -->
+          <q-chat-message
+            v-for="(item, index) in lyric"
+            :key="index"
+            :text="[item.value]"
+            :avatar="avatar"
+            :name="name"
+            :bg-color="
+              item.index[0] <= getCurrentTime && getCurrentTime < item.index[1]
+                ? 'dark'
+                : 'grey-2'
+            "
+            :class="
+              item.index[0] <= getCurrentTime && getCurrentTime < item.index[1]
+                ? 'active-lyric'
+                : ''
+            "
+            v-show="item.value"
+          />
+        </q-scroll-area>
       </q-tab-panel>
 
       <q-tab-panel name="more">
@@ -143,12 +171,42 @@ export default {
     initCommentType: {
       type: String,
       default: 'hot'
+    },
+    lyric: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
+    avatar: {
+      type: String,
+      default: 'https://cdn.quasar.dev/logo/svg/quasar-logo.svg'
+    },
+    name: {
+      type: String,
+      default: 'unknow'
     }
   },
   created() {},
   mounted() {},
-  computed: {},
-  watched: {}
+  computed: {
+    getCurrentTime() {
+      return this.$store.state.currentTime
+    }
+  },
+  watch: {
+    getCurrentTime: {
+      handler(newValue, oldValue) {
+        // console.log('currentTime:', newValue)
+        const activeLyricEl = document.querySelector('.active-lyric')
+        if (activeLyricEl && activeLyricEl.offsetTop > 225) {
+          this.$refs.lyricScroll.setScrollPosition(
+            activeLyricEl.offsetTop - 150
+          )
+        }
+      }
+    }
+  }
 }
 </script>
 <style scoped lang="scss">
@@ -164,6 +222,20 @@ export default {
   .comment-title {
     margin-top: 0;
     margin-bottom: 40px;
+  }
+  .lyric-scroll {
+    transition: all 0.69s linear;
+    .active-lyric {
+      ::v-deep .q-message-text {
+        width: 200%;
+        .q-message-text-content {
+          div {
+            color: white;
+            font-weight: bolder;
+          }
+        }
+      }
+    }
   }
 }
 @media (max-width: $breakpoint-md-min) {

@@ -141,7 +141,9 @@ export default {
         return this.showNotify('deep-orange-6', '获取mv评论失败', 'top')
       }
       this.comments = comments
-      this.hotComments = hotComments
+      if (offset === 0) {
+        this.hotComments = hotComments
+      }
     },
     async getMvCommentLikeCount() {
       const {
@@ -159,10 +161,10 @@ export default {
     },
     changePage(value) {
       this.getMvComment(20, value * 20)
-      this.$refs.tabsWrapper.scrollIntoView({ behavior: 'smooth' })
+      // this.$refs.tabsWrapper.scrollIntoView({ behavior: 'smooth' })
     },
     clickPlay() {
-      console.log('clickPlay')
+      // console.log('clickPlay')
       if (!this.isPause) {
         this.$store.commit('setIsPaused', true)
       }
@@ -186,7 +188,7 @@ export default {
         poster: this.mvCover
       }
       this.player.on('playing', event => {
-        console.log('playing event')
+        // console.log('playing event')
         if (!this.isPause) {
           this.$store.commit('setIsPaused', true)
         }

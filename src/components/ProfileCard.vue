@@ -1,5 +1,5 @@
 <template>
-  <div class="profile-card card-wrapper col-10" v-if="playlist">
+  <div class="profile-card" v-if="playlist">
     <q-card
       :class="[
         'my-card wrap bg-grey-2',
@@ -39,7 +39,12 @@
             class="text-h6 text-weight-regular text-grey-9 desc items-start"
             v-else
           >
-            {{ playlist.ar[0].name }} / {{ playlist.al.name }}
+            歌手: {{ playlist.ar[0].name }}
+          </div>
+        </div>
+        <div class="col-12" v-if="type === 'song'">
+          <div class="text-h6 text-weight-regular text-grey-9 desc items-start">
+            专辑: {{ playlist.al.name }}
           </div>
         </div>
         <q-chip
@@ -127,7 +132,7 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-.card-wrapper {
+.profile-card {
   height: auto;
   .my-card {
     height: auto;
@@ -161,7 +166,7 @@ export default {
   }
 }
 @media (max-width: $breakpoint-sm-max) {
-  .card-wrapper {
+  .profile-card {
     height: auto;
     .my-card {
       height: auto;

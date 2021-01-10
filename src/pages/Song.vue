@@ -1,5 +1,5 @@
 <template>
-  <q-page class="song q-py-lg row justify-center">
+  <q-page class="song q-py-lg row justify-center content-start">
     <div class="intro-wrapper col-10">
       <profile-card
         :playlist="songInfo"
@@ -16,6 +16,9 @@
         path="song"
         simiTitle="相似歌曲"
         @changePage="changePage"
+        :lyric="lyric"
+        :avatar="songInfo.al.picUrl"
+        :name="songInfo.ar[0].name"
       ></tabs>
     </div>
   </q-page>
@@ -24,7 +27,12 @@
 <script>
 import ProfileCard from '../components/ProfileCard'
 import Tabs from '../components/Tabs'
-import { getListAllSong, getSongComment, getSimiSong } from '../boot/axios'
+import {
+  getListAllSong,
+  getSongComment,
+  getSimiSong,
+  getLyric
+} from '../boot/axios'
 export default {
   name: 'Song',
   data() {
@@ -39,7 +47,8 @@ export default {
       comments: [],
       hotComments: [],
       simiSongs: [],
-      commentCount: 0
+      commentCount: 0,
+      lyric: []
     }
   },
   methods: {
@@ -64,7 +73,9 @@ export default {
         return this.showNotify('deep-orange-6', '获取mv评论失败', 'top')
       }
       this.comments = comments
-      this.hotComments = hotComments
+      if (offset === 0) {
+        this.hotComments = hotComments
+      }
       this.commentCount = total
     },
     async getSimiSong() {
@@ -73,6 +84,30 @@ export default {
         return this.showNotify('deep-orange-6', '获取相似MV失败', 'top')
       }
       this.simiSongs = songs
+    },
+    async getLyric() {
+      const { code, lrc } = await getLyric(this.id)
+      if (code !== 200) {
+        this.showNotify('deep-orange-6', '获取歌词失败', 'top')
+      }
+      // console.log('lyric:', lrc.lyric.split('\n'))
+      const arr = [
+        ...lrc.lyric.matchAll(/\[(\d{2}):(\d{2})\.\d{3}\]\u00a0?(.*?)\n/g)
+      ]
+      arr.forEach(item => {
+        // console.log(item[1], ':', item[2], '->', item[3])
+        // const second = item[1].split('')
+        const lrcTime = parseInt(item[1]) * 60 + parseInt(item[2])
+        // console.log(lrcTime, '->', item[3])
+        this.lyric.push({ index: [lrcTime], value: item[3] })
+      })
+      for (let i = 0; i < this.lyric.length - 1; i++) {
+        this.lyric[i].index.push(this.lyric[i + 1].index[0])
+      }
+      this.lyric[this.lyric.length - 1].index.push(
+        this.lyric[this.lyric.length - 1].index[0]
+      )
+      console.log(this.lyric)
     },
     changePage(value) {
       this.getSongComment(20, value * 20)
@@ -97,6 +132,7 @@ export default {
     this.getSongDetail()
     this.getSongComment()
     this.getSimiSong()
+    this.getLyric()
   },
   mounted() {},
   computed: {
@@ -107,6 +143,9 @@ export default {
     isPaused() {
       return this.$store.state.isPaused
     }
+    // getCurrentTime() {
+    //   return this.$store.state.currentTime
+    // }
   },
   watch: {
     // getSongInfo: {
@@ -119,4 +158,11 @@ export default {
   }
 }
 </script>
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.song {
+  height: auto;
+  .intro-wrapper {
+    height: auto;
+  }
+}
+</style>

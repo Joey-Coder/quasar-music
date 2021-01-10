@@ -237,12 +237,23 @@ export function getSongComment(id, limit = 20, offset = 0, before) {
 }
 
 /**
- * 获取相似mv
+ * 获取相似歌曲
  * @param {Number | String} id
  */
 export function getSimiSong(id) {
   return request({
     method: 'GET',
     url: `/simi/song?id=${id}`
+  })
+}
+
+/**
+ * 获取歌词
+ * @param {Number | String} id
+ */
+export function getLyric(id) {
+  return request({
+    method: 'GET',
+    url: `/lyric?id=${id}`
   })
 }

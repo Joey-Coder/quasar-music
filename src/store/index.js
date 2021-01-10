@@ -24,7 +24,8 @@ export default function(/* { ssrContext } */) {
         },
         ar: [{ name: '' }]
       },
-      isPaused: true
+      isPaused: true,
+      currentTime: 0
     },
     mutations: {
       setSongInfo(state, info) {
@@ -32,6 +33,9 @@ export default function(/* { ssrContext } */) {
       },
       setIsPaused(state, value) {
         state.isPaused = value
+      },
+      setCurrentTime(state, value) {
+        state.currentTime = value
       }
     },
     modules: {

@@ -167,6 +167,8 @@ export default {
       if (this.debace) {
         this.debace = false
         this.currentTime = event.target.currentTime
+        this.$store.commit('setCurrentTime', parseInt(event.target.currentTime))
+        // console.log(('currentTime:', parseInt(event.target.currentTime)))
         setTimeout(() => {
           this.debace = true
         }, 900)
@@ -345,6 +347,7 @@ export default {
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 1;
           overflow: hidden;
+          max-width: 30vw;
         }
       }
     }
