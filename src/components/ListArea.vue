@@ -1,5 +1,5 @@
 <template>
-  <div class="list-area list-wrapper col-10">
+  <div class="list-area list-wrapper ">
     <q-list class="rounded-borders" v-if="songList.length > 0">
       <q-item-label
         header

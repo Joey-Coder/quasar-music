@@ -199,6 +199,10 @@ export default {
       handler(newValue, oldValue) {
         // console.log('currentTime:', newValue)
         const activeLyricEl = document.querySelector('.active-lyric')
+        // 重新播放歌曲时歌词滑动到第一句
+        if (newValue === 0) {
+          this.$refs.lyricScroll.setScrollPosition(0)
+        }
         if (activeLyricEl && activeLyricEl.offsetTop > 225) {
           this.$refs.lyricScroll.setScrollPosition(
             activeLyricEl.offsetTop - 150
@@ -228,6 +232,7 @@ export default {
     .active-lyric {
       ::v-deep .q-message-text {
         width: 200%;
+        max-width: 65vw;
         .q-message-text-content {
           div {
             color: white;

@@ -1,7 +1,7 @@
 <template>
   <div class="play-list">
     <q-page class="q-py-lg row justify-center content-start">
-      <profile-card :playlist="playlist" class="card-wrapper"></profile-card>
+      <profile-card :playlist="playlist" class="card-wrapper col-10"></profile-card>
       <list-area
         :songList="songList"
         :listTitle="listTitle"
@@ -10,7 +10,7 @@
         @changeFlag="changeFlag"
         :flag="flag"
         :index="index"
-        class="list-wrapper"
+        class="list-wrapper col-10"
       ></list-area>
     </q-page>
   </div>
