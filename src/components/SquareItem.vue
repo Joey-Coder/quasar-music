@@ -97,6 +97,7 @@ export default {
 </script>
 <style scoped lang="scss">
 .square-item {
+  height: auto;
   a {
     text-decoration: none;
     color: black;

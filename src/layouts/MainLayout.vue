@@ -118,7 +118,7 @@
     </q-header>
 
     <q-page-container>
-      <keep-alive :include="['PageIndex', 'Artist', 'PlayList','Song']">
+      <keep-alive :include="['PageIndex', 'Artist', 'PlayList', 'Song', 'Search']">
         <router-view :key="$route.fullPath" />
       </keep-alive>
     </q-page-container>
@@ -142,6 +142,9 @@ export default {
     }
   },
   methods: {
+    goTo(keywords) {
+      this.$router.push({ name: 'search', params: { keywords } })
+    },
     clearSearchBox() {
       this.text = ''
     },
@@ -166,6 +169,11 @@ export default {
         this.progress = 0
         clearInterval(this.interval)
       }, 10000)
+    },
+    onKeyUp(event) {
+      if (event.keyCode === 13) {
+        this.goTo(this.text)
+      }
     }
   },
   computed: {
@@ -174,6 +182,17 @@ export default {
     }
   },
   watch: {
+    centerVisiable: {
+      handler(newValue, oldValue) {
+        if (!newValue) {
+          setTimeout(() => {
+            document
+              .querySelector('.search-box')
+              .addEventListener('keyup', this.onKeyUp)
+          }, 200)
+        }
+      }
+    }
     // musicUrl: {
     //   handler(newValue, oldValue) {
     //     console.log('sfdsfsd')

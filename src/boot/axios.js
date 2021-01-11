@@ -257,3 +257,14 @@ export function getLyric(id) {
     url: `/lyric?id=${id}`
   })
 }
+
+/**
+ * 获取搜索结果
+ * @param {Number | String} keywords
+ */
+export function getSearch(keywords, limit, type) {
+  return request({
+    method: 'GET',
+    url: `/cloudsearch?keywords= ${keywords}&limit=${limit}&type=${type}`
+  })
+}

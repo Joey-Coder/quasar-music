@@ -33,6 +33,12 @@ const routes = [
         name: 'song',
         component: () => import('pages/Song.vue'),
         props: true
+      },
+      {
+        path: 'search/:keywords',
+        name: 'search',
+        component: () => import('pages/Search.vue'),
+        props: true
       }
     ]
   },
