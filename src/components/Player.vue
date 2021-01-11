@@ -127,19 +127,18 @@ export default {
       currentTime: 0,
       debace: true,
       currentVolume: 0.5,
-      loop: false,
-      showSong: false
+      loop: false
     }
   },
   methods: {
     goTo(id) {
-      if (!this.showSong) {
-        console.log(id)
-        this.$router.push({ name: 'song', params: { id } })
-      } else {
+      if (this.$router.currentRoute.params.id.toString() === id.toString()) {
+        // console.log('back')
         this.$router.go(-1)
+      } else {
+        // console.log('song')
+        this.$router.push({ name: 'song', params: { id } })
       }
-      this.showSong = !this.showSong
     },
     handlePlay() {
       if (this.musicUrl !== '') {

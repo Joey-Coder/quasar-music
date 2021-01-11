@@ -4,6 +4,7 @@
       v-model="tab"
       narrow-indicator
       align="justify"
+      class="justify-center"
       style="margin: 0 auto"
     >
       <q-tab
@@ -199,14 +200,13 @@ export default {
       handler(newValue, oldValue) {
         // console.log('currentTime:', newValue)
         const activeLyricEl = document.querySelector('.active-lyric')
+        const lyricRef = this.$refs.lyricScroll
         // 重新播放歌曲时歌词滑动到第一句
-        if (newValue === 0) {
-          this.$refs.lyricScroll.setScrollPosition(0)
+        if (newValue === 0 && lyricRef) {
+          lyricRef.setScrollPosition(0)
         }
         if (activeLyricEl && activeLyricEl.offsetTop > 225) {
-          this.$refs.lyricScroll.setScrollPosition(
-            activeLyricEl.offsetTop - 150
-          )
+          lyricRef.setScrollPosition(activeLyricEl.offsetTop - 150)
         }
       }
     }
@@ -218,6 +218,10 @@ export default {
   margin-top: 50px;
   .q-tabs {
     max-width: 40vw;
+    ::v-deep q-tabs__content {
+      display: flex;
+      justify-content: center;
+    }
   }
   .show-items {
     padding-top: 0;
@@ -248,6 +252,10 @@ export default {
     margin-top: 10px;
     .q-tabs {
       max-width: 60vw;
+      ::v-deep q-tabs__content {
+        display: flex;
+        justify-content: center;
+      }
       .tab-icon {
         font-size: 10px;
       }

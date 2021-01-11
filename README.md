@@ -1,26 +1,21 @@
 # Quasar App (quasar-music)
 
-a music website for study
+Vue + Quasar 开发的一款多端适配的音乐网站, 持续开发中
 
-## Install the dependencies
-```bash
-yarn
+## 安装
+
 ```
+# 安装quasar脚手架
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
-```bash
+npm i quasar-cli
+
+# clone
+
+git clone git@github.com:Joey-Coder/quasar-music.git
+cd quasar-music
+npm i
+
+# 启动项目
 quasar dev
-```
 
-### Lint the files
-```bash
-yarn run lint
 ```
-
-### Build the app for production
-```bash
-quasar build
-```
-
-### Customize the configuration
-See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).

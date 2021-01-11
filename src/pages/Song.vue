@@ -90,24 +90,24 @@ export default {
       if (code !== 200) {
         this.showNotify('deep-orange-6', '获取歌词失败', 'top')
       }
-      // console.log('lyric:', lrc.lyric.split('\n'))
       const arr = [
         ...lrc.lyric.matchAll(/\[(\d{2}):(\d{2})\.\d{3}\]\u00a0?(.*?)\n/g)
       ]
-      arr.forEach(item => {
-        // console.log(item[1], ':', item[2], '->', item[3])
-        // const second = item[1].split('')
-        const lrcTime = parseInt(item[1]) * 60 + parseInt(item[2])
-        // console.log(lrcTime, '->', item[3])
-        this.lyric.push({ index: [lrcTime], value: item[3] })
-      })
-      for (let i = 0; i < this.lyric.length - 1; i++) {
-        this.lyric[i].index.push(this.lyric[i + 1].index[0])
+
+      const lastlrc =
+        parseInt(arr[arr.length - 1][1]) * 60 + parseInt(arr[arr.length - 1][2])
+      this.lyric[arr.length - 1] = {
+        index: [lastlrc, lastlrc],
+        value: arr[arr.length - 1][3]
       }
-      this.lyric[this.lyric.length - 1].index.push(
-        this.lyric[this.lyric.length - 1].index[0]
-      )
-      console.log(this.lyric)
+      for (let i = arr.length - 2; i >= 0; i--) {
+        const lrcTime = parseInt(arr[i][1]) * 60 + parseInt(arr[i][2])
+        this.lyric[i] = {
+          index: [lrcTime, this.lyric[i + 1].index[0]],
+          value: arr[i][3]
+        }
+      }
+      // console.log(this.lyric)
     },
     changePage(value) {
       this.getSongComment(20, value * 20)

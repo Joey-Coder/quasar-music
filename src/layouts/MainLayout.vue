@@ -57,6 +57,7 @@
               v-if="$q.screen.lt.sm"
               class="q-mr-sm"
               size="md"
+              @click="$router.push('/')"
             ></q-icon>
             <q-icon
               name="explore"
