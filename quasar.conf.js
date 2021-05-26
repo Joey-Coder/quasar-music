@@ -6,8 +6,9 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
 /* eslint-env node */
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 
-module.exports = function(/* ctx */) {
+module.exports = function(ctx) {
   return {
     // https://quasar.dev/quasar-cli/supporting-ts
     supportTS: false,
@@ -49,10 +50,18 @@ module.exports = function(/* ctx */) {
       // transpileDependencies: [],
 
       // rtl: false, // https://quasar.dev/options/rtl-support
-      // preloadChunks: true,
-      // showProgress: false,
-      // gzip: true,
+      preloadChunks: true,
+      showProgress: true,
+      gzip: true,
       // analyze: true,
+      
+      // 根据服务器nginx路径，配置生产路径
+      publicPath: ctx.dev ? '/' : '/qmusic/',
+
+      // 往process.env新增API属性
+      env: {
+        API: ctx.dev ? '/api' : 'https://autumnfish.cn/'
+      },
 
       // Options below are automatically set depending on the env, set them if you want to override
       // extractCSS: false,
@@ -65,6 +74,7 @@ module.exports = function(/* ctx */) {
           loader: 'eslint-loader',
           exclude: /node_modules/
         })
+        cfg.plugins.push(new HardSourceWebpackPlugin())
       }
     },
 

@@ -4,7 +4,8 @@ import axios from 'axios'
 // 动态进度条
 
 const request = axios.create({
-  baseURL: '/api',
+  // baseURL: process.env.DEV ? '/api' : 'https://autumnfish.cn/',
+  baseURL: process.env.API,
   timeout: 5000
 })
 
